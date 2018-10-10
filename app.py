@@ -1,6 +1,6 @@
 from flask import Flask, request, flash, render_template
 from config import SECRET_KEY
-from db import close_db, get_permit
+from db import close_db, get_permit, insert_plan
 from auth import requires_auth
 # from gevent.pywsgi import WSGIServer
 
@@ -22,7 +22,7 @@ def search():
         error = None
         apno = request.form.get('apno-form')
 
-        # Flash a message when AIS breaks
+        # Flash a message when something unexpected occurs
         try:
             permit = get_permit(apno)
         except:
@@ -45,8 +45,17 @@ def search():
     return render_template('search.html')
 
 @requires_auth
-@app.route('/form')
+@app.route('/form', methods=['GET', 'POST'])
 def form():
+    if request.method == 'POST':
+        #error = None
+        apno = request.form.get('apno-input')
+        #multipleapplications = request.form.get('multipleapps-input')
+        package = request.form.get('package-input')
+        location = request.form.get('location-input')
+        sheetno = request.form.get('sheet-number-input')
+        insert_plan(apno, package, location, sheetno)
+        
     return render_template('form.html')
 
     

@@ -6,13 +6,13 @@
 
     <h1 class="title">Enter a Plan</h1>
 
-    <form>
+    <form action="{{ url_for('form') }}" method="post">
 
         <div class="form-group">
             <label for="ap-number-input">AP Number</label>
             <span class="required-label">(required)</span>
             <div id="ap-number-input">
-                <input type="text">
+                <input type="text" name="apno-input">
             </div>
         </div>
 
@@ -49,7 +49,7 @@
         <div class="form-group">
             <label for="sheet-number-input">Number of Sheets</label>
             <span class="required-label">(required)</span>
-            <input id="sheet-number-input" type="number" min="0" max="10000" step="1" value ="1"/>
+            <input name="sheet-number-input" type="number" min="0" max="10000" step="1" value="1"/>
         </div>
 
         <div class="pull-right">
