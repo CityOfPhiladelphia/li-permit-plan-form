@@ -10,9 +10,19 @@
 
         <div class="form-group">
             <label for="ap-number-input">AP Number</label>
+            <span class="required-label">(required)</span>
             <div id="ap-number-input">
                 <input type="text">
             </div>
+        </div>
+
+        <div class="form-group">
+            <label for="multiple-app-input">Multiple Applications?</label>
+            <span class="required-label">(required)</span>
+            <select name="location-input" id="location-input">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -37,12 +47,9 @@
         </div>
 
         <div class="form-group">
-            <label for="multiple-app-input">Multiple Applications?</label>
+            <label for="sheet-number-input">Number of Sheets</label>
             <span class="required-label">(required)</span>
-            <select name="location-input" id="location-input">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
+            <input id="sheet-number-input" type="number" min="0" max="10000" step="1" value ="1"/>
         </div>
 
         <div class="pull-right">
