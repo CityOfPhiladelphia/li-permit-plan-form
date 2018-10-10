@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <div>
+        <a href="{{ url_for('search') }}">
+            <button>
+                Search for a Plan
+            </button>
+        </a>
+        <a href="{{ url_for('form') }}">
+            <button>
+                Enter a Plan
+            </button>
+        </a>
+    </div>
+
+{% endblock %}
