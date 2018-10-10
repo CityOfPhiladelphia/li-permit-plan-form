@@ -16,6 +16,28 @@
 }
 
 @media (min-width: 400px) {
+    .index-container {
+      width: 45%;
+      display: flex;
+      margin: auto;
+      padding-top: 200px;
+      justify-content: center;
+      align-items: center;
+    }
+}
+  
+@media (min-width: 550px) {
+    .index-container {
+      width: 40%;
+      display: flex;
+      margin: auto;
+      padding-top: 200px;
+      justify-content: center;
+      align-items: center;
+    }
+}
+
+@media (min-width: 400px) {
     .form-container {
       width: 45%;
       padding: 0;
@@ -26,14 +48,45 @@
 @media (min-width: 550px) {
     .form-container {
       width: 40%;
-      margin: auto; 
+      margin: auto;
     }
 }
 
+@media (min-width: 400px) {
+    .search-container {
+      width: 65%;
+      padding: 0;
+      margin: auto;
+    }
+}
+  
+@media (min-width: 550px) {
+    .search-container {
+      width: 60%;
+      margin: auto;
+    }
+}
+
+/* Flash messages */
+
+.flash { 
+    width: 40%;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 1em;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background: #cae6f6; 
+    border: 1px solid #377ba8;
+    text-align: center;
+}
+
+/* Titles */
 .title {
     text-align: center;
 }
 
+/* Button formatting */
 .pull-right {
     float: right !important;
 }
@@ -62,4 +115,17 @@
     color: #fff;
     background-color: #598cd1;
     border-color: #457ecb;
+}
+
+/* Index Page */
+.index-button {
+    padding-right: 50px;
+    padding-left: 50px;
+    text-align: center;
+}
+
+/* Search Page */
+#search-form {
+    width: 40%;
+    margin: auto;
 }

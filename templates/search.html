@@ -2,6 +2,61 @@
 
 {% block content %}
     
-<h1>Search Page</h1>
+<div class="search-container">
+
+    <h1 class="title">Search for a  Plan</h1>
+
+    {% if permit %}
+        <table class="table" id="searchtable">
+            <th>AP Type</th>
+            <th>Address</th>
+            <th>Package</th>
+            <th>Location</th>
+            <th>Multiple Apps</th>
+            <th>Examiner</th>
+            <th>Date Advanced to Plans Reviewed Stage</th>
+            <th>No. of Sheets</th>
+            <tr>
+                <td>
+                    {{ permit.aptype }}
+                </td>
+                <td>
+                    {{ permit.address }}
+                </td>
+                <td>
+                    {{ permit.package }}
+                </td>
+                <td>
+                    {{ permit.location }}
+                </td>
+                <td>
+                    {{ permit.multipleapps }}
+                </td>
+                <td>
+                    {{ permit.examiner }}
+                </td>
+                <td>
+                    {{ permit.apdttm }}
+                </td>
+                <td>
+                    {{ permit.sheetno}}
+                </td>
+            </tr>
+
+        </table>
+    {% endif %}
+    <form action="{{ url_for('search') }}" method="post">
+
+        <div class="form-group" id="search-form">
+            <label for="ap-number-input">AP Number</label>
+            <span class="required-label">(required)</span>
+            <div id="ap-number-input">
+                <input type="text" name="apno-form">
+            </div>
+        </div>
+    
+    </form>
+
+</div>
 
 {% endblock %}

@@ -1,27 +1,11 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-from config import USERNAME, PASSWORD, HOSTNAME, PORT, SERVICE_NAME
-import os
-import csv
 from flask import g
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 def get_db():
     if 'db' not in g:
-        import cx_Oracle
-        oracle_connection_string = (
-            'oracle+cx_oracle://{username}:{password}@' +
-            cx_Oracle.makedsn('{hostname}', '{port}', '{service_name}')
-        )
-        engine = create_engine(
-                    oracle_connection_string.format(
-                        username=USERNAME,
-                        password=PASSWORD,
-                        hostname=HOSTNAME,
-                        port=PORT,
-                        service_name=SERVICE_NAME
-                    )
-                )
+        engine = create_engine('sqlite:///permitplans.db')
         g.db = scoped_session(sessionmaker(bind=engine))
         g.db.engine = engine
     
@@ -32,3 +16,12 @@ def close_db(e=None):
 
     if db is not None:
         db.close()
+
+def get_permit(apno):
+    db = get_db()
+    sql = f"""SELECT * FROM permit 
+              LEFT JOIN plan_permit ON permit.id = plan_permit.permit_id
+              LEFT JOIN plan ON plan.id = plan_permit.plan_id
+              WHERE permit.apno = {apno}"""
+    permit = db.engine.execute(text(sql)).fetchone()
+    return permit
