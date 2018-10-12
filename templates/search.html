@@ -4,33 +4,23 @@
     
 <div class="search-container">
 
-    <h1 class="title">Search for a  Plan</h1>
-
     {% if permit %}
-        <table class="table" id="searchtable">
-            <th>AP Type</th>
+        <h2 class="title">Permit Information</h2>
+        <table class="table" id="permit-table">
+            <th>AP Number</th>
             <th>Address</th>
-            <th>Package</th>
-            <th>Location</th>
-            <th>Multiple Apps</th>
+            <th>AP Type</th>
             <th>Examiner</th>
             <th>Date Advanced to Plans Reviewed Stage</th>
-            <th>No. of Sheets</th>
             <tr>
                 <td>
-                    {{ permit.aptype }}
+                    {{ permit.apno }}
                 </td>
                 <td>
                     {{ permit.address }}
                 </td>
                 <td>
-                    {{ permit.package }}
-                </td>
-                <td>
-                    {{ permit.location }}
-                </td>
-                <td>
-                    {{ permit.multipleapps }}
+                    {{ permit.aptype }}
                 </td>
                 <td>
                     {{ permit.examiner }}
@@ -38,18 +28,39 @@
                 <td>
                     {{ permit.apdttm }}
                 </td>
-                <td>
-                    {{ permit.sheetno}}
-                </td>
             </tr>
-
         </table>
     {% endif %}
+    {% if plans %}
+        <h2 class="title">Plan Information</h2>
+            {% for plan in plans %}
+                <table class="table" id="plan-table">
+                    <th>Package</th>
+                    <th>Location</th>
+                    <th>Number of Sheets</th>
+                    <tr>
+                        <td>
+                            {{ plan.package|capitalize }}
+                        </td>
+                        <td>
+                            {{ plan.location|capitalize }}
+                        </td>
+                        <td>
+                            {{ plan.sheetno }}
+                        </td>
+                    </tr>
+                </table>
+            {% endfor %}
+    {% endif %}
+    <h1 class="title">Search for Plans</h1>
+
     <form action="{{ url_for('search') }}" method="post">
 
         <div class="form-group" id="search-form">
-            <label for="ap-number-input">AP Number</label>
-            <span class="required-label">(required)</span>
+            <div>
+                <label for="ap-number-input" class="search-label">AP Number</label>
+                <span class="required-label search-label">(required)</span>
+            </div>
             <div id="ap-number-input">
                 <input type="text" name="apno-form">
             </div>

@@ -19,12 +19,29 @@ def close_db(e=None):
 
 def get_permit(apno):
     db = get_db()
-    sql = f"""SELECT * FROM permit 
-              LEFT JOIN plan_permit ON permit.id = plan_permit.permit_id
-              LEFT JOIN plan ON plan.id = plan_permit.plan_id
+    sql = f"""SELECT * FROM permit
               WHERE permit.apno = {apno}"""
     permit = db.engine.execute(text(sql)).fetchone()
     return permit
+
+def get_plans(apno):
+    db = get_db()
+    sql = f"""SELECT * FROM plan
+              INNER JOIN plan_permit ON plan.id = plan_permit.plan_id
+              INNER JOIN permit ON permit.id = plan_permit.permit_id
+              WHERE permit.apno = {apno}"""
+    plans = db.engine.execute(text(sql)).fetchall()
+    return plans
+
+# def get_apnos_from_plan(plan_id, apno):
+#     db = get_db()
+#     sql = f"""SELECT apno FROM permit
+#               INNER JOIN plan_permit ON permit.id = plan_permit.id
+#               INNER JOIN plan ON plan.id = plan_permit.id
+#               WHERE plan.id = {plan_id}
+#               AND apno != {apno}"""
+#     apnos = db.engine.execute(text(sql)).fetchall()
+#     return apnos
 
 def validate_apno(apno):
     # Ensure apno is an integer

@@ -126,8 +126,17 @@
 }
 
 /* Search Page */
+.search-label {
+    display: inline-block;
+}
+
 #search-form {
     width: 40%;
+    margin: auto;
+}
+
+#plan-table {
+    width: 60%;
     margin: auto;
 }
 

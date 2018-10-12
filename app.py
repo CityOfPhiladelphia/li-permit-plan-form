@@ -1,7 +1,7 @@
 from flask import Flask, request, flash, render_template, jsonify
 
 from config import SECRET_KEY
-from db import close_db, get_permit, insert_plan, validate_apno, insert_plan_permit 
+from db import close_db, get_permit, get_plans, insert_plan, validate_apno, insert_plan_permit 
 from auth import requires_auth
 # from gevent.pywsgi import WSGIServer
 
@@ -31,17 +31,33 @@ def search():
             flash(error)
             return render_template('search.html')
 
+        # Flash a message when an invalid AP Number is entered
         if permit is None:
             error = 'Please enter a valid AP Number.'
             flash(error)
             return render_template('search.html')
 
+        # Flash a message when no results are found for that AP Number
         elif len(permit) == 0:
-            error = 'No results found for that AP Number.'
+            error = 'No permit was found for that AP Number.'
             flash(error)
-            return render_template('search.html') 
+            return render_template('search.html')
+
+        # Flash a message when something unexpected occurs
+        try:
+            plans = get_plans(apno)
+        except:
+            error = 'An error has occurred. Please try again later or contact LI GIS Team if the error persists.'
+            flash(error)
+            return render_template('search.html', permit=permit)
+
+        # Flash a message when no plans are found for that AP Number
+        if len(plans) == 0:
+            error = 'No plans were found for that AP Number.'
+            flash(error)
+            return render_template('search.html', permit=permit)
         
-        return render_template('search.html', permit=permit)
+        return render_template('search.html', permit=permit, plans=plans)
     
     return render_template('search.html')
 
