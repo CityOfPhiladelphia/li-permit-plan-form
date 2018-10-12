@@ -1,6 +1,7 @@
-from flask import Flask, request, flash, render_template
+from flask import Flask, request, flash, render_template, jsonify
+
 from config import SECRET_KEY
-from db import close_db, get_permit, insert_plan
+from db import close_db, get_permit, insert_plan, validate_apno, insert_plan_permit 
 from auth import requires_auth
 # from gevent.pywsgi import WSGIServer
 
@@ -26,7 +27,7 @@ def search():
         try:
             permit = get_permit(apno)
         except:
-            error = 'An error has occurred. Please try again later or contact LI GIS Team if the error permits.'
+            error = 'An error has occurred. Please try again later or contact LI GIS Team if the error persists.'
             flash(error)
             return render_template('search.html')
 
@@ -48,14 +49,30 @@ def search():
 @app.route('/form', methods=['GET', 'POST'])
 def form():
     if request.method == 'POST':
-        #error = None
-        apno = request.form.get('apno-input')
-        #multipleapplications = request.form.get('multipleapps-input')
+
+        # Get data from form
+        apnos = request.form.getlist('apno-input')
         package = request.form.get('package-input')
         location = request.form.get('location-input')
         sheetno = request.form.get('sheet-number-input')
-        insert_plan(apno, package, location, sheetno)
-        
+
+        # Insert the plan into the plan table
+        insert_plan(package, location, sheetno)
+
+        # For each apno, try to insert the apno andplan data into the plan_permit table in the database
+        # to associate each apno with a plan and permit
+        for apno in apnos:
+            # First, make sure the apno is valid
+            if validate_apno(apno):
+                insert_plan_permit(apno)
+                
+                success = f'The plan for AP Number {apno} was successfully entered.'
+                flash(success)
+            # Flash an error message when an invalid AP Number is inputed.
+            else: 
+                error = f'{apno} is not a valid AP Number. Please try again.'
+                flash(error)
+
     return render_template('form.html')
 
     

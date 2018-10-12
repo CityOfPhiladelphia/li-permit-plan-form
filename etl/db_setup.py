@@ -7,26 +7,25 @@ def main():
 
         # Create plans table
         c.execute('''CREATE TABLE plan (
-                    id INTEGER PRIMARY KEY,
-                    apno INTEGER, 
-                    package TEXT, 
-                    location TEXT, 
-                    sheetno INTEGER)''')
+                     id INTEGER PRIMARY KEY,
+                     package TEXT, 
+                     location TEXT, 
+                     sheetno INTEGER)''')
 
         # Create permits table
         c.execute('''CREATE TABLE permit (
-                    id INTEGER PRIMARY KEY,
-                    address TEXT, 
-                    apno INTEGER, 
-                    aptype TEXT, 
-                    examiner TEXT, 
-                    apdttm TEXT)''')
+                     id INTEGER PRIMARY KEY,
+                     address TEXT, 
+                     apno INTEGER, 
+                     aptype TEXT, 
+                     examiner TEXT, 
+                     apdttm TEXT)''')
 
         # Create plan_permit table to allow for many-to-many relationship
         c.execute('''CREATE TABLE plan_permit (
-                    id INTEGER PRIMARY KEY,
-                    plan_id INTEGER,
-                    permit_id INTEGER)''')
+                     id INTEGER PRIMARY KEY,
+                     plan_id INTEGER,
+                     permit_id INTEGER)''')
 
         conn.commit()
 

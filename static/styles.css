@@ -130,3 +130,13 @@
     width: 40%;
     margin: auto;
 }
+
+/* Form Page */
+.form-label {
+    display: inline-block;
+}
+
+#add-apno-button {
+    cursor: pointer;
+    float: right;
+}
