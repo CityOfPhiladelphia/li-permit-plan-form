@@ -1,7 +1,7 @@
-from flask import Flask, request, flash, render_template, jsonify
+from flask import Flask, request, flash, render_template, jsonify, session, redirect, url_for
 
 from config import SECRET_KEY
-from db import close_db, get_permit, get_plans, insert_plan, validate_apno, insert_plan_permit 
+from db import close_db, get_permit, get_plans, insert_plan, get_permit_address, insert_plan_permit 
 from auth import requires_auth
 # from gevent.pywsgi import WSGIServer
 
@@ -66,31 +66,54 @@ def search():
 def form():
     if request.method == 'POST':
 
-        # Get data from form
-        apnos = request.form.getlist('apno-input')
-        package = request.form.get('package-input')
-        location = request.form.get('location-input')
-        sheetno = request.form.get('sheet-number-input')
+        apno_dict = {}
 
-        # Insert the plan into the plan table
-        insert_plan(package, location, sheetno)
-
-        # For each apno, try to insert the apno andplan data into the plan_permit table in the database
-        # to associate each apno with a plan and permit
-        for apno in apnos:
-            # First, make sure the apno is valid
-            if validate_apno(apno):
-                insert_plan_permit(apno)
-                
-                success = f'The plan for AP Number {apno} was successfully entered.'
-                flash(success)
-            # Flash an error message when an invalid AP Number is inputed.
-            else: 
-                error = f'{apno} is not a valid AP Number. Please try again.'
+        # Validate the apnos
+        for apno in request.form.getlist('apno-input'):
+            # If a permit with a valid apno doesn't exist, take the user back to the form and flash a message.
+            permit_address = get_permit_address(apno)
+            if permit_address is False:
+                error = f'{apno} is not a valid AP Number.'
                 flash(error)
+                return render_template('form.html')
+            # If it does exist, store the permit address in the dictionary
+            apno_dict[apno] = permit_address
+
+        # Get data from form and store it in a session
+        session['apnos'] = apno_dict
+        session['package'] = request.form.get('package-input')
+        session['location'] = request.form.get('location-input')
+        session['sheetno'] = request.form.get('sheet-number-input')
+
+        # Load the confirmation page
+        return render_template('confirm.html')
 
     return render_template('form.html')
 
+@requires_auth
+@app.route('/confirm', methods=['GET', 'POST'])
+def confirm():
+    # Don't let users view or submit this page if they don't have session data
+    if session['apnos'] is None:
+        return render_template('form.html')
+
+    if request.method == 'POST': 
+
+        # Insert the plan into the plan table
+        insert_plan(session['package'], session['location'], session['sheetno'])
+
+        # Insert the apnos and plan data into the plan_permit table in the database
+        # to associate each apno with a plan and permit
+        for apno, address in session['apnos'].items():
+            insert_plan_permit(apno)
+
+        # Clear the session
+        session.clear()
+        success = f'The plan was successfully entered.'
+        flash(success)
+        return redirect(url_for('form'))
+    
+    return render_template('confirm.html')
     
 
 # if __name__ == '__main__':

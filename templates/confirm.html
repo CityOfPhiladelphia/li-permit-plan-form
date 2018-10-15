@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="confirm-container">
+
+    <h2 class="title">Please confirm the AP Numbers below match the addresses</h2>
+
+    <table class="table" id="confirm-table">
+        <th>AP Number</th>
+        <th>Address</th>
+        {% for apno, address in session['apnos'].items() %}
+            <tr>
+                <td>
+                    {{ apno }}
+                </td>
+                <td>
+                    {{ address }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="pull-right confirm-btn-outer">
+        <form action="{{ url_for('confirm') }}" method="post" class="confirm-btn-inner">
+            <button class="btn btn-secondary submit-button">
+                <span>Submit</span>
+            </button>
+        </form>
+        <a href="{{ url_for('form') }}" class="confirm-btn-inner">
+            <button class="btn btn-decline submit-button">
+                <span>Abort</span>
+            </button>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

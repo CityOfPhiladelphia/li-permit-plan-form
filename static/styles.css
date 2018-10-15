@@ -67,6 +67,21 @@
     }
 }
 
+@media (min-width: 400px) {
+    .confirm-container {
+      width: 45%;
+      padding: 0;
+      margin: auto;
+    }
+}
+  
+@media (min-width: 550px) {
+    .confirm-container {
+      width: 40%;
+      margin: auto;
+    }
+}
+
 /* Flash messages */
 
 .flash { 
@@ -116,6 +131,20 @@
     color: #fff;
     background-color: #598cd1;
     border-color: #457ecb;
+}
+
+.btn-decline {
+    color: #fff;
+    background-color: #d16759;
+    border-color: #d42727;
+}
+
+.confirm-btn-outer {
+    text-align: center;
+}
+
+.confirm-btn-inner {
+    display: inline-block;
 }
 
 /* Index Page */

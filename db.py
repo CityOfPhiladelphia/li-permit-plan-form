@@ -43,19 +43,19 @@ def get_plans(apno):
 #     apnos = db.engine.execute(text(sql)).fetchall()
 #     return apnos
 
-def validate_apno(apno):
+def get_permit_address(apno):
     # Ensure apno is an integer
     try:
         int(apno)
     except ValueError:
         return False
     db = get_db()
-    sql = f"""SELECT apno FROM permit 
+    sql = f"""SELECT address FROM permit 
               WHERE apno = {apno}"""
-    permit = db.engine.execute(text(sql)).fetchone()
-    if len(permit) == 1:
-        return True
-    return False
+    permit_address = db.engine.execute(text(sql)).fetchone()
+    if permit_address is not None:
+        permit_address = permit_address[0]
+    return permit_address
 
 def insert_plan(package, location, sheetno):
     db = get_db()
