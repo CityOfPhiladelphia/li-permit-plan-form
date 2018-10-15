@@ -1,7 +1,8 @@
 from flask import Flask, request, flash, render_template, jsonify, session, redirect, url_for
 
 from config import SECRET_KEY
-from db import close_db, get_permit, get_plans, insert_plan, get_permit_address, insert_plan_permit 
+from db import (close_db, get_permit, get_plans, insert_plan, 
+                get_permit_address, insert_plan_permit, get_apnos_associated_with_plan)
 from auth import requires_auth
 # from gevent.pywsgi import WSGIServer
 
@@ -20,7 +21,6 @@ def index():
 def search():
     if request.method == 'POST':
         
-        error = None
         apno = request.form.get('apno-form')
 
         # Flash a message when something unexpected occurs
@@ -56,8 +56,20 @@ def search():
             error = 'No plans were found for that AP Number.'
             flash(error)
             return render_template('search.html', permit=permit)
+
+        # Create a list to store plans
+        plan_list = []
+
+        for plan in plans:
+            # Create a dictionary to store plan information
+            plan_dict = {}
+            plan_dict['package'] = plan.package
+            plan_dict['location'] = plan.location
+            plan_dict['sheetno'] = plan.sheetno
+            plan_dict['apnos'] = get_apnos_associated_with_plan(plan.plan_id)
+            plan_list.append(plan_dict)
         
-        return render_template('search.html', permit=permit, plans=plans)
+        return render_template('search.html', permit=permit, plans=plan_list)
     
     return render_template('search.html')
 

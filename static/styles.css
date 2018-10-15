@@ -167,6 +167,14 @@
 #plan-table {
     width: 60%;
     margin: auto;
+    text-align: center;
+}
+
+#apno-table {
+    width: 20%;
+    margin: auto;
+    margin-bottom: 40px;
+    text-align: center;
 }
 
 /* Form Page */
