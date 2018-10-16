@@ -1,23 +1,30 @@
 from flask import Flask, request, flash, render_template, jsonify, session, redirect, url_for
+from flask_httpauth import HTTPDigestAuth
+from gevent.pywsgi import WSGIServer
 
-from config import SECRET_KEY
+from config import SECRET_KEY, users
 from db import (close_db, get_permit, get_plans, insert_plan, 
                 get_permit_address, insert_plan_permit, get_apnos_associated_with_plan)
-from auth import requires_auth
-from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
 # Close the database when the app shuts down
 app.teardown_appcontext(close_db)
 app.secret_key = SECRET_KEY
+auth = HTTPDigestAuth()
 
-@requires_auth
+@auth.get_password
+def get_pw(username):
+    if username in users:
+        return users.get(username)
+    return None
+
 @app.route('/')
+@auth.login_required
 def index():
     return render_template('index.html')
 
-@requires_auth
 @app.route('/search', methods=['GET', 'POST'])
+@auth.login_required
 def search():
     if request.method == 'POST':
         
@@ -73,8 +80,8 @@ def search():
     
     return render_template('search.html')
 
-@requires_auth
 @app.route('/form', methods=['GET', 'POST'])
+@auth.login_required
 def form():
     if request.method == 'POST':
 
@@ -102,8 +109,8 @@ def form():
 
     return render_template('form.html')
 
-@requires_auth
 @app.route('/confirm', methods=['GET', 'POST'])
+@auth.login_required
 def confirm():
     # Don't let users view or submit this page if they don't have session data
     if session['apnos'] is None:
