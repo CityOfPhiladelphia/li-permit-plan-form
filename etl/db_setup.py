@@ -1,31 +1,37 @@
 import sqlite3
 
+from li_dbs import GISLICLD
+
+
 def main():
-    with sqlite3.connect('permitplans.db') as conn:
+    with GISLICLD.GISLICLD() as conn:
 
         c = conn.cursor()
 
         # Create plans table
-        c.execute('''CREATE TABLE plan (
-                     id INTEGER PRIMARY KEY,
-                     package TEXT, 
-                     location TEXT, 
-                     sheetno INTEGER)''')
+        c.execute('''CREATE TABLE plan_app_plan (
+                     id NUMBER(20) PRIMARY KEY,
+                     package VARCHAR2(254 BYTE), 
+                     location VARCHAR2(254 BYTE), 
+                     sheetno NUMBER(10))''')
 
         # Create permits table
-        c.execute('''CREATE TABLE permit (
-                     id INTEGER PRIMARY KEY,
-                     address TEXT, 
-                     apno INTEGER, 
-                     aptype TEXT, 
-                     examiner TEXT, 
-                     apdttm TEXT)''')
+        c.execute('''CREATE TABLE plan_app_permit (
+                     id NUMBER(20) PRIMARY KEY,
+                     address VARCHAR2(254 BYTE), 
+                     apno VARCHAR2(20 BYTE), 
+                     aptype VARCHAR2(254 BYTE), 
+                     examiner VARCHAR2(254 BYTE), 
+                     apdttm DATE,
+                     
+                     CONSTRAINT unique_permit UNIQUE (apno)
+                     )''')
 
         # Create plan_permit table to allow for many-to-many relationship
-        c.execute('''CREATE TABLE plan_permit (
-                     id INTEGER PRIMARY KEY,
-                     plan_id INTEGER,
-                     permit_id INTEGER)''')
+        c.execute('''CREATE TABLE plan_app_plan_permit (
+                     id NUMBER(20) PRIMARY KEY,
+                     plan_id NUMBER(20),
+                     permit_id NUMBER(20))''')
 
         conn.commit()
 

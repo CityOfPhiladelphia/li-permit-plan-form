@@ -22,7 +22,6 @@ def send_email():
     server.server.quit()
 
 def main():
-    truncate_and_etl()
     try:
         truncate_and_etl()
     except:

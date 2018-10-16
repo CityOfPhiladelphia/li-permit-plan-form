@@ -4,7 +4,7 @@ from config import SECRET_KEY
 from db import (close_db, get_permit, get_plans, insert_plan, 
                 get_permit_address, insert_plan_permit, get_apnos_associated_with_plan)
 from auth import requires_auth
-# from gevent.pywsgi import WSGIServer
+from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
 # Close the database when the app shuts down
@@ -128,6 +128,6 @@ def confirm():
     return render_template('confirm.html')
     
 
-# if __name__ == '__main__':
-#     http_server = WSGIServer(('0.0.0.0', 8100), app)
-#     http_server.serve_forever()
+if __name__ == '__main__':
+    http_server = WSGIServer(('0.0.0.0', 8200), app)
+    http_server.serve_forever()

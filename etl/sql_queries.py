@@ -1,39 +1,45 @@
 truncate_query = """
-    DELETE FROM permit
+    DELETE FROM plan_app_permit
 """
 
 permit_extract = """
-    SELECT
-        addr.addr_parsed address,
-        TRIM(apstat.apno) apno,
-        defn.aptype,
-        apstat.examiner,
-        apstat.apdttm
+    SELECT DISTINCT
+    addr.addr_parsed address,
+    TRIM(apstat.apno) apno,
+    defn.aptype,
+    apstat.examiner,
+    trn.trndttm apdttm
     FROM
         imsv7.imsv7li_permitappstatus@lidb_link apstat,
         imsv7.apdefn@lidb_link defn,
         imsv7.ap@lidb_link ap,
+        imsv7.aptrn@lidb_link trn,
+        imsv7.apfee@lidb_link fee,
         lni_addr addr
     WHERE
         ap.apno = apstat.apno (+)
         AND defn.apdefnkey = ap.apdefnkey (+)
         AND ap.addrkey = addr.addrkey
+        AND ap.apkey = trn.apkey
+        AND fee.apfeekey = trn.apfeekey
         AND apstat.apno IS NOT NULL
+        AND fee.feedesc LIKE 'MAJOR ALT PERMIT FEE'
+        AND trn.trnamt > 0
 """
 
 cloud_insert = """
-    INSERT INTO permit (
-        address,
-        apno,
-        aptype,
-        examiner,
-        apdttm
+    INSERT INTO plan_app_permit (
+    address,
+    apno,
+    aptype,
+    examiner,
+    apdttm
     ) VALUES (
-        :1,
-        :2,
-        :3,
-        :4,
-        :5
+    :1,
+    :2,
+    :3,
+    :4,
+    :5
     )
 """
 

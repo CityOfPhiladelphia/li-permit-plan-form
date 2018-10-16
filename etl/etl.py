@@ -1,6 +1,6 @@
 import sqlite3
 
-from li_dbs import GISLNI
+from li_dbs import GISLNI, GISLICLD
 from sql_queries import truncate_query, permit_to_cloud_query
 
 
@@ -32,7 +32,7 @@ def etl(query, source_con, target_con):
         print('No data to ETL')
 
 def truncate_and_etl():
-    with GISLNI.GISLNI() as source, sqlite3.connect('permitplans.db') as target:
+    with GISLNI.GISLNI() as source, GISLICLD.GISLICLD() as target:
         truncate(truncate_query, target)
         etl(permit_to_cloud_query, source, target)
 
