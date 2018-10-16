@@ -35,45 +35,39 @@
     {% if plans %}
         <h2 class="title">Plan Information</h2>
             {% for plan in plans %}
-                <h3 class="title">Plan #{{ loop.index0 + 1 }}</h3>
-                <table class="table" id="plan-table">
-                    <th>Package</th>
-                    <th>Location</th>
-                    <th>Number of Sheets</th>
-                    <th>AP Numbers Linked to this Plan</th>
-                    <tr>
-                        <td>
-                            {{ plan.package|capitalize }}
-                        </td>
-                        <td>
-                            {{ plan.location|capitalize }}
-                        </td>
-                        <td>
-                            {{ plan.sheetno }}
-                        </td>
-                        <td>
-                            {% set apnostring = '' %}
-                            {% for apno in plan.apnos %}
-                                {% set apnostring = apnostring + apno[0]|string + ', ' %}
-                            {% endfor %}
-                            {{ apnostring }}
-                        </td>
-                    </tr>
-                </table>
-
-                {% if plan.apnos %}
-                    <h4 class="title">AP Numbers Linked to this Plan</h3>
-                    <table class="table" id="apno-table">
-                        <th>AP Numbers</th>
-                        {% for apno in plan.apnos %}
-                            <tr>
-                                <td>
-                                    {{ apno[0] }}
-                                </td>
-                            </tr>
-                        {% endfor %}
+                <div class="confirm-plan-table-container">
+                    <h3 class="title">Plan #{{ loop.index0 + 1 }}</h3>
+                    <table class="table" id="plan-table">
+                        <th>Package</th>
+                        <th>Location</th>
+                        <th>Number of Sheets</th>
+                        <tr>
+                            <td>
+                                {{ plan.package|capitalize }}
+                            </td>
+                            <td>
+                                {{ plan.location|capitalize }}
+                            </td>
+                            <td>
+                                {{ plan.sheetno }}
+                            </td>
+                        </tr>
                     </table>
-                {% endif %}
+
+                    {% if plan.apnos %}
+                        <h4 class="title">Other AP Numbers Associated With This Plan</h3>
+                        <table class="table" id="apno-table">
+                            <th>AP Numbers</th>
+                            {% for apno in plan.apnos %}
+                                <tr>
+                                    <td>
+                                        {{ apno[0] }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                </div>
             {% endfor %}
     {% endif %}
     <h1 class="title">Search for Plans</h1>
@@ -86,7 +80,7 @@
                 <span class="required-label search-label">(required)</span>
             </div>
             <div id="ap-number-input">
-                <input type="text" name="apno-form">
+                <input type="text" name="apno-form" class="permit-input">
             </div>
         </div>
     

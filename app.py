@@ -66,7 +66,7 @@ def search():
             plan_dict['package'] = plan.package
             plan_dict['location'] = plan.location
             plan_dict['sheetno'] = plan.sheetno
-            plan_dict['apnos'] = get_apnos_associated_with_plan(plan.plan_id)
+            plan_dict['apnos'] = get_apnos_associated_with_plan(plan.plan_id, apno)
             plan_list.append(plan_dict)
         
         return render_template('search.html', permit=permit, plans=plan_list)

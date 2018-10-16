@@ -33,7 +33,7 @@ def get_plans(apno):
     plans = db.engine.execute(text(sql)).fetchall()
     return plans
 
-def get_apnos_associated_with_plan(plan_id):
+def get_apnos_associated_with_plan(plan_id, apno):
     db = get_db()
     sql = f"""SELECT apno
               FROM permit
@@ -42,7 +42,8 @@ def get_apnos_associated_with_plan(plan_id):
                   SELECT permit_id
                   FROM plan_permit
                   WHERE plan_id = {plan_id}
-              )"""
+              )
+              AND permit.apno != {apno}"""
     apnos = db.engine.execute(text(sql)).fetchall()
     return apnos
 
