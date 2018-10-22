@@ -70,6 +70,7 @@ def search():
         for plan in plans:
             # Create a dictionary to store plan information
             plan_dict = {}
+            plan_dict['id'] = plan.plan_id
             plan_dict['package'] = plan.package
             plan_dict['location'] = plan.location
             plan_dict['sheetno'] = plan.sheetno

@@ -36,7 +36,7 @@
         <h2 class="title">Plan Information</h2>
             {% for plan in plans %}
                 <div class="confirm-plan-table-container">
-                    <h3 class="title">Plan #{{ loop.index0 + 1 }}</h3>
+                    <h3 class="title">Plan #{{ plan.id }}</h3>
                     <table class="table" id="plan-table">
                         <th>Package</th>
                         <th>Location</th>
