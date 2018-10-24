@@ -74,6 +74,7 @@ def search():
             plan_dict['package'] = plan.package
             plan_dict['location'] = plan.location
             plan_dict['sheetno'] = plan.sheetno
+            plan_dict['comments'] = plan.comments
             plan_dict['apnos'] = get_apnos_associated_with_plan(plan.plan_id, apno)
             plan_list.append(plan_dict)
         
@@ -86,6 +87,7 @@ def search():
 def form():
     if request.method == 'POST':
 
+        # Create a dictionary to store apnos and their associated addresses
         apno_dict = {}
 
         # Validate the apnos
@@ -104,6 +106,7 @@ def form():
         session['package'] = request.form.get('package-input')
         session['location'] = request.form.get('location-input')
         session['sheetno'] = request.form.get('sheet-number-input')
+        session['comments'] = request.form.get('comments-input')
 
         # Load the confirmation page
         return render_template('confirm.html')
@@ -120,7 +123,7 @@ def confirm():
     if request.method == 'POST': 
 
         # Insert the plan into the plan table
-        insert_plan(session['package'], session['location'], session['sheetno'])
+        insert_plan(session['package'], session['location'], session['sheetno'], session['comments'])
 
         # Insert the apnos and plan data into the plan_permit table in the database
         # to associate each apno with a plan and permit

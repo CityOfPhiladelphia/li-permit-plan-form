@@ -13,7 +13,9 @@ def main():
                      id NUMBER(20) PRIMARY KEY,
                      package VARCHAR2(254 BYTE), 
                      location VARCHAR2(254 BYTE), 
-                     sheetno NUMBER(10))''')
+                     sheetno NUMBER(10),
+                     comments VARCHAR(2000 BYTE),
+                     dateadded TIMESTAMP(6))''')
 
         # Create permits table
         c.execute('''CREATE TABLE plan_app_permit (

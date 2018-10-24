@@ -1,5 +1,6 @@
 import cx_Oracle
 
+from datetime import datetime
 from flask import g
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -78,12 +79,12 @@ def get_permit_address(apno):
         permit_address = permit_address[0]
     return permit_address
 
-def insert_plan(package, location, sheetno):
+def insert_plan(package, location, sheetno, comments):
     db = get_db()
 
     # Insert the plan into the plan table
-    plan_insert_sql = f"""INSERT INTO plan_app_plan (package, location, sheetno)
-                          VALUES ('{package}', '{location}', {sheetno})"""
+    plan_insert_sql = f"""INSERT INTO plan_app_plan (package, location, sheetno, comments, dateadded)
+                          VALUES ('{package}', '{location}', {sheetno}, '{comments}', to_date('{datetime.now().date()}', 'yyyy-mm-dd'))"""
     db.engine.execute(text(plan_insert_sql))
 
 def insert_plan_permit(apno):
