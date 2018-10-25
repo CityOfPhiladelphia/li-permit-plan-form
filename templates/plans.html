@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="plans-container">
+
+    <h1 class="title">View Plans</h1>
+
+    <div class="plans-table-container">
+        <table class="table" id="plan-table">
+            <th>Plan ID</th>
+            <th>Package</th>
+            <th>Location</th>
+            <th>Number of Sheets</th>
+            <th>Comments</th>
+            <th>Edit</th>
+            {% for plan in plans %}
+            <tr>
+                <td>
+                    {{ plan.id }}
+                </td>
+                <td>
+                    {{ plan.package|capitalize }}
+                </td>
+                <td>
+                    {{ plan.location|capitalize }}
+                </td>
+                <td>
+                    {{ plan.sheetno }}
+                </td>
+                <td>
+                    {{ plan.comments }}
+                </td>
+                <td>
+                    <a href="{{ url_for('edit', plan_id=plan.id) }}">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

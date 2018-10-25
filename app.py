@@ -3,8 +3,7 @@ from flask_httpauth import HTTPDigestAuth
 from gevent.pywsgi import WSGIServer
 
 from config import SECRET_KEY, users
-from db import (close_db, get_permit, get_plans, insert_plan, 
-                get_permit_address, insert_plan_permit, get_apnos_associated_with_plan)
+from db import *
 
 app = Flask(__name__)
 # Close the database when the app shuts down
@@ -137,6 +136,22 @@ def confirm():
         return redirect(url_for('form'))
     
     return render_template('confirm.html')
+
+@app.route('/plans')
+@auth.login_required
+def plans():
+    # Get all the plans
+    plans = get_all_plans()
+
+    return render_template('plans.html', plans=plans)
+
+@app.route('/edit/<int:plan_id>', methods=['GET', 'POST'])
+@auth.login_required
+def edit(plan_id):
+    # Get all the plans
+    plan = get_plan_from_id(plan_id)
+
+    return render_template('edit.html', plan=plan)
     
 
 if __name__ == '__main__':

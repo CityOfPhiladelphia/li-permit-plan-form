@@ -106,3 +106,25 @@ def insert_plan_permit(apno):
     plan_permit_insert_sql = f"""INSERT INTO plan_app_plan_permit (plan_id, permit_id)
                                  VALUES ({plan_id}, {permit_id})"""
     db.engine.execute(text(plan_permit_insert_sql))
+
+def get_all_plans():
+    db = get_db()
+
+    all_plans_sql = """SELECT * 
+                       FROM plan_app_plan
+                       ORDER BY dateadded"""
+
+    plans = db.engine.execute(text(all_plans_sql)).fetchall()
+
+    return plans
+
+def get_plan_from_id(plan_id):
+    db = get_db()
+
+    plan_sql = f"""SELECT *
+                   FROM plan_app_plan
+                   WHERE id = {plan_id}"""
+
+    plan = db.engine.execute(text(plan_sql)).fetchone()
+
+    return plan
