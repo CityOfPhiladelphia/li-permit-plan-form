@@ -91,12 +91,20 @@ def form():
 
         # Validate the apnos
         for apno in request.form.getlist('apno-input'):
+
             # If a permit with a valid apno doesn't exist, take the user back to the form and flash a message.
             permit_address = get_permit_address(apno)
             if permit_address is False:
                 error = f'{apno} is not a valid AP Number.'
                 flash(error)
                 return render_template('form.html')
+
+            # If a permit with a valid apno exists but no address was found, take the user back to the form and flash a message.
+            elif permit_address is None:
+                error = f'{apno} exists in Hansen, but no address was found. Please contact LIGISTeam.'
+                flash(error)
+                return render_template('form.html')
+
             # If it does exist, store the permit address in the dictionary
             apno_dict[apno] = permit_address
 
@@ -104,7 +112,6 @@ def form():
         session['apnos'] = apno_dict
         session['package'] = request.form.get('package-input')
         session['location'] = request.form.get('location-input')
-        session['sheetno'] = request.form.get('sheet-number-input')
         session['comments'] = request.form.get('comments-input')
 
         # Load the confirmation page
@@ -122,7 +129,7 @@ def confirm():
     if request.method == 'POST': 
 
         # Insert the plan into the plan table
-        insert_plan(session['package'], session['location'], session['sheetno'], session['comments'])
+        insert_plan(session['package'], session['location'], session['comments'])
 
         # Insert the apnos and plan data into the plan_permit table in the database
         # to associate each apno with a plan and permit
@@ -131,7 +138,7 @@ def confirm():
 
         # Clear the session
         session.clear()
-        success = f'The plan was successfully entered.'
+        success = 'The plan was successfully entered.'
         flash(success)
         return redirect(url_for('form'))
     
@@ -148,10 +155,48 @@ def plans():
 @app.route('/edit/<int:plan_id>', methods=['GET', 'POST'])
 @auth.login_required
 def edit(plan_id):
+    if request.method == 'POST':
+        # Validate the apnos
+        apnos = request.form.getlist('apno-input')
+        for apno in apnos:
+
+            # If a permit with a valid apno doesn't exist, take the user back to the form and flash a message.
+            permit_address = get_permit_address(apno)
+            if permit_address is False:
+                error = f'{apno} is not a valid AP Number.'
+                flash(error)
+                return render_template('form.html')
+
+            # If a permit with a valid apno exists but no address was found, take the user back to the form and flash a message.
+            elif permit_address is None:
+                error = f'{apno} exists in Hansen, but no address was found. Please contact LIGISTeam.'
+                flash(error)
+                return render_template('form.html')
+
+        # Get input from the form
+        package = request.form.get('package-input')
+        location = request.form.get('location-input')
+        comments = request.form.get('comments-input')
+
+        # Update the plan
+        update_plan(plan_id, package, location, comments)
+
+        # Update the plan_permits
+        for apno in apnos:
+            update_plan_permit(plan_id, apno)
+
+        # Go back to the plans page when submitted and display a success message
+        success = 'Your edit was successful.'
+        flash(success)
+        return render_template('plans.html')
+
     # Get all the plans
     plan = get_plan_from_id(plan_id)
 
-    return render_template('edit.html', plan=plan)
+    # Get all the apnos
+    apnos = get_all_apnos_associated_with_plan(plan_id)
+
+    return render_template('edit.html', plan=plan, apnos=apnos)
     
 
 if __name__ == '__main__':

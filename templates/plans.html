@@ -11,8 +11,10 @@
             <th>Plan ID</th>
             <th>Package</th>
             <th>Location</th>
-            <th>Number of Sheets</th>
+            <th>No. Sheets</th>
             <th>Comments</th>
+            <th>Date Added</th>
+            <th>Last Edit</th>
             <th>Edit</th>
             {% for plan in plans %}
             <tr>
@@ -29,7 +31,19 @@
                     {{ plan.sheetno }}
                 </td>
                 <td>
-                    {{ plan.comments }}
+                    {% if plan.comments == None %}
+                    {% else %}
+                        {{ plan.comments }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ plan.dateadded.strftime('%Y-%m-%d') }}
+                </td>
+                <td>
+                    {% if plan.editdate == None %}
+                    {% else %}
+                        {{ plan.editdate.strftime('%Y-%m-%d') }}
+                    {% endif %}
                 </td>
                 <td>
                     <a href="{{ url_for('edit', plan_id=plan.id) }}">Edit</a>
