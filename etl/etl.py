@@ -1,5 +1,3 @@
-import sqlite3
-
 from li_dbs import GISLNI, GISLICLD
 from sql_queries import truncate_query, permit_to_cloud_query
 

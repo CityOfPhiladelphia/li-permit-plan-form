@@ -152,6 +152,21 @@ def plans():
 
     return render_template('plans.html', plans=plans)
 
+@app.route('/delete/<int:plan_id>', methods=['POST'])
+@auth.login_required
+def delete(plan_id):
+    # Try to delete the plan
+    try:
+        delete_plan(plan_id)
+        # Flash a success message if it works
+        success = f'You have successfully deleted Plan {plan_id}'
+        flash(success)
+    # Flash an error message if it doesn't work
+    except:
+        error = 'Something went wrong. Please contact LI GIS Team'
+        flash(error)
+    return redirect(url_for('plans'))
+
 @app.route('/edit/<int:plan_id>', methods=['GET', 'POST'])
 @auth.login_required
 def edit(plan_id):

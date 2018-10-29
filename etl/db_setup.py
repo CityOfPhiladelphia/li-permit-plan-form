@@ -1,5 +1,3 @@
-import sqlite3
-
 from li_dbs import GISLICLD
 
 

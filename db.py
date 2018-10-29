@@ -129,6 +129,19 @@ def get_plan_from_id(plan_id):
     plan = db.engine.execute(text(plan_sql)).fetchone()
     return plan
 
+def delete_plan(plan_id):
+    db = get_db()
+
+    # Delete the plan from the plan table
+    delete_plan_sql = f"""DELETE FROM plan_app_plan
+                          WHERE id = {plan_id}"""
+    db.engine.execute(text(delete_plan_sql))
+
+    # Delete the plan_permit entries for this plan
+    delete_plan_permit_sql = f"""DELETE FROM plan_app_plan_permit
+                                 WHERE plan_id = {plan_id}"""
+    db.engine.execute(text(delete_plan_permit_sql))
+
 def update_plan(plan_id, package, location, comments):
     db = get_db()
 

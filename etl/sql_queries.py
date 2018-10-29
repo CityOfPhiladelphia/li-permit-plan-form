@@ -8,7 +8,7 @@ permit_extract = """
         TRIM(apstat.apno) apno,
         defn.aptype,
         apstat.examiner,
-        bldg.nopages sheetno,
+        bldg.nopages,
         trn.trndttm apdttm
     FROM
         imsv7.imsv7li_permitappstatus@lidb_link apstat,
@@ -36,13 +36,15 @@ cloud_insert = """
     apno,
     aptype,
     examiner,
+    nopages,
     apdttm
     ) VALUES (
     :1,
     :2,
     :3,
     :4,
-    :5
+    :5,
+    :6
     )
 """
 

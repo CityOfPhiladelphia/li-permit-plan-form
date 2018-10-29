@@ -28,7 +28,11 @@
                     {{ plan.location|capitalize }}
                 </td>
                 <td>
+                    {% if plan.sheetno == None %}
+                    0
+                    {% else %}
                     {{ plan.sheetno }}
+                    {% endif %}
                 </td>
                 <td>
                     {% if plan.comments == None %}
