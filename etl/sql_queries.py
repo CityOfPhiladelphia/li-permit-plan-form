@@ -3,22 +3,25 @@ truncate_query = """
 """
 
 permit_extract = """
-    SELECT DISTINCT
-    addr.addr_parsed address,
-    TRIM(apstat.apno) apno,
-    defn.aptype,
-    apstat.examiner,
-    trn.trndttm apdttm
+    SELECT
+        DISTINCT addr.addr_parsed address,
+        TRIM(apstat.apno) apno,
+        defn.aptype,
+        apstat.examiner,
+        bldg.nopages sheetno,
+        trn.trndttm apdttm
     FROM
         imsv7.imsv7li_permitappstatus@lidb_link apstat,
         imsv7.apdefn@lidb_link defn,
         imsv7.ap@lidb_link ap,
         imsv7.aptrn@lidb_link trn,
         imsv7.apfee@lidb_link fee,
+        imsv7.apbldg@lidb_link bldg,
         lni_addr addr
     WHERE
         ap.apno = apstat.apno (+)
         AND defn.apdefnkey = ap.apdefnkey (+)
+        AND bldg.apno = ap.apno
         AND ap.addrkey = addr.addrkey
         AND ap.apkey = trn.apkey
         AND fee.apfeekey = trn.apfeekey

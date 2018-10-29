@@ -134,7 +134,7 @@ def update_plan(plan_id, package, location, comments):
 
     # Insert the plan into the plan table
     plan_insert_sql = f"""UPDATE plan_app_plan 
-                            SET package = '{package}', location = '{location}', comments = '{comments}'
+                            SET package = '{package}', location = '{location}', comments = '{comments}', editdate = {datetime.now()}
                             WHERE id = {plan_id}"""
     db.engine.execute(text(plan_insert_sql))
 
@@ -143,6 +143,6 @@ def update_plan_permit(plan_id, apno):
 
     # Insert the plan_id and apno into the plan_permit table
     plan_permit_insert_sql = f"""UPDATE plan_app_plan_permit
-                                 SET plan_id = {plan_id}, apno = {apno}
-                                 WHERE"""
+                                   SET plan_id = {plan_id}, apno = {apno}
+                                   WHERE"""
     db.engine.execute(text(plan_permit_insert_sql))
