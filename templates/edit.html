@@ -10,6 +10,8 @@
 
     <h1 class="title">Edit Plan {{ plan.id }}</h1>
 
+    <form action="{{ url_for('edit', plan_id=plan.id) }}" method="post">
+
         <div class="form-group">
             <div>
                 <label for="ap-number-input" class="form-label" >AP Number</label>
@@ -68,11 +70,11 @@
             {% endif %}
         </div>
         <div class="pull-right confirm-btn-outer">
-            <form action="{{ url_for('edit', plan_id=plan.id) }}" method="post" class="confirm-btn-inner">
-                <button class="btn btn-secondary submit-button">
-                    <span>Submit</span>
-                </button>
-            </form>
+            <button class="btn btn-secondary submit-button">
+                <span>Edit Plan</span>
+            </button>
+    </form>
+    
             <form action="{{ url_for('delete', plan_id=plan.id) }}" method="post" class="confirm-btn-inner">
                 <button class="btn btn-decline submit-button">
                     <span>Delete Plan</span>

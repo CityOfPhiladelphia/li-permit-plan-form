@@ -147,15 +147,27 @@ def update_plan(plan_id, package, location, comments):
 
     # Insert the plan into the plan table
     plan_insert_sql = f"""UPDATE plan_app_plan 
-                            SET package = '{package}', location = '{location}', comments = '{comments}', editdate = {datetime.now()}
+                            SET package='{package}', 
+                                location='{location}', 
+                                comments='{comments}', 
+                                editdate=to_date('{datetime.now().date()}', 'yyyy-mm-dd')
                             WHERE id = {plan_id}"""
     db.engine.execute(text(plan_insert_sql))
 
-def update_plan_permit(plan_id, apno):
+def update_plan_permits(plan_id, apnos):
     db = get_db()
 
-    # Insert the plan_id and apno into the plan_permit table
-    plan_permit_insert_sql = f"""UPDATE plan_app_plan_permit
-                                   SET plan_id = {plan_id}, apno = {apno}
-                                   WHERE"""
-    db.engine.execute(text(plan_permit_insert_sql))
+    # Delete the old plan_permits
+    plan_permit_delete_sql = f"""DELETE FROM plan_app_plan_permit
+                                   WHERE plan_id={plan_id}"""
+
+    db.engine.execute(text(plan_permit_delete_sql))
+
+    # Insert the new plan_permits
+    for apno in apnos:
+        
+        plan_permit_insert_sql = f"""INSERT INTO plan_app_plan_permit (plan_id, apno)
+                                    VALUES ({plan_id}, {apno})"""
+
+        # Add the new plan_permits
+        db.engine.execute(text(plan_permit_insert_sql))

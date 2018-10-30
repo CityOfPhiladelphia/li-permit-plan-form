@@ -101,7 +101,7 @@ def form():
 
             # If a permit with a valid apno exists but no address was found, take the user back to the form and flash a message.
             elif permit_address is None:
-                error = f'{apno} exists in Hansen, but no address was found. Please contact LIGISTeam.'
+                error = f'{apno} exists in Hansen, but no address was found. Please contact LI GIS Team.'
                 flash(error)
                 return render_template('form.html')
 
@@ -173,6 +173,7 @@ def edit(plan_id):
     if request.method == 'POST':
         # Validate the apnos
         apnos = request.form.getlist('apno-input')
+        
         for apno in apnos:
 
             # If a permit with a valid apno doesn't exist, take the user back to the form and flash a message.
@@ -180,13 +181,17 @@ def edit(plan_id):
             if permit_address is False:
                 error = f'{apno} is not a valid AP Number.'
                 flash(error)
-                return render_template('form.html')
+                plan = get_plan_from_id(plan_id)
+                apnos = get_all_apnos_associated_with_plan(plan_id)
+                return render_template('edit.html', plan=plan, apnos=apnos)
 
             # If a permit with a valid apno exists but no address was found, take the user back to the form and flash a message.
             elif permit_address is None:
-                error = f'{apno} exists in Hansen, but no address was found. Please contact LIGISTeam.'
+                error = f'{apno} exists in Hansen, but no address was found. Please contact LI GIS Team.'
                 flash(error)
-                return render_template('form.html')
+                plan = get_plan_from_id(plan_id)
+                apnos = get_all_apnos_associated_with_plan(plan_id)
+                return render_template('edit.html', plan=plan, apnos=apnos)
 
         # Get input from the form
         package = request.form.get('package-input')
@@ -197,22 +202,21 @@ def edit(plan_id):
         update_plan(plan_id, package, location, comments)
 
         # Update the plan_permits
-        for apno in apnos:
-            update_plan_permit(plan_id, apno)
+        update_plan_permits(plan_id, apnos)
 
         # Go back to the plans page when submitted and display a success message
         success = 'Your edit was successful.'
         flash(success)
-        return render_template('plans.html')
+        return redirect(url_for('plans'))
 
-    # Get all the plans
+    # Get the plan
     plan = get_plan_from_id(plan_id)
 
     # Get all the apnos
     apnos = get_all_apnos_associated_with_plan(plan_id)
 
     return render_template('edit.html', plan=plan, apnos=apnos)
-    
+
 
 if __name__ == '__main__':
     http_server = WSGIServer(('0.0.0.0', 8200), app)
