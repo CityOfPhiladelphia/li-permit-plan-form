@@ -204,4 +204,10 @@
 #add-apno-button {
     cursor: pointer;
     float: right;
+    margin-right: 5px;
+}
+
+#delete-apno-button {
+    cursor: pointer;
+    float: right;
 }

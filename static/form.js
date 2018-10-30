@@ -10,4 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
         apnoButton.appendChild(apnoInput);
         document.querySelector('#ap-number-input-list').append(apnoButton);
     });
+
+    // When the delete AP Number button is clicked, remove an AP Number field
+    document.querySelector('#delete-apno-button').addEventListener('click', () => {
+        let apNumberInputList = document.querySelector('#ap-number-input-list');
+        if (apNumberInputList.childElementCount > 1) {
+            apNumberInputList.removeChild(apNumberInputList.lastChild);
+        }
+    })
 });
