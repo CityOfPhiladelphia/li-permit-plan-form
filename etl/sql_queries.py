@@ -30,7 +30,6 @@ permit_extract = """
         AND trn.trntype = 'FCHG'
         AND fee.feedesc NOT LIKE '%ACCELERATED%'
         AND fee.feedesc NOT LIKE '%FILING%'
-        AND trim(apstat.apno) LIKE '917182'
     GROUP BY
         addr.addr_parsed,
         TRIM(apstat.apno),
