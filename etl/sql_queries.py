@@ -9,7 +9,7 @@ permit_extract = """
         defn.aptype,
         apstat.examiner,
         bldg.nopages,
-        trn.trndttm apdttm
+        MAX(trn.trndttm) apdttm
     FROM
         imsv7.imsv7li_permitappstatus@lidb_link apstat,
         imsv7.apdefn@lidb_link defn,
@@ -26,8 +26,16 @@ permit_extract = """
         AND ap.apkey = trn.apkey
         AND fee.apfeekey = trn.apfeekey
         AND apstat.apno IS NOT NULL
-        AND fee.feedesc LIKE '%PERMIT FEE%'
         AND trn.trnamt > 0
+        AND trn.trntype = 'FCHG'
+        AND fee.feedesc not like '%ACCELERATED%'
+        AND fee.feedesc not like '%FILING%'
+    GROUP BY
+        addr.addr_parsed,
+        TRIM(apstat.apno),
+        defn.aptype,
+        apstat.examiner,
+        bldg.nopages
 """
 
 cloud_insert = """
