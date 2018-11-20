@@ -1,5 +1,5 @@
 truncate_query = """
-    DELETE FROM plan_app_permit
+    TRUNCATE TABLE plan_app_permit
 """
 
 permit_extract = """
