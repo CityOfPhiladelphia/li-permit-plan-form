@@ -9,33 +9,37 @@ permit_extract = """
         defn.aptype,
         apstat.examiner,
         bldg.nopages,
-        MAX(trn.trndttm) apdttm
+        paiddate.apdttm
     FROM
         imsv7.imsv7li_permitappstatus@lidb_link apstat,
         imsv7.apdefn@lidb_link defn,
         imsv7.ap@lidb_link ap,
-        imsv7.aptrn@lidb_link trn,
-        imsv7.apfee@lidb_link fee,
         imsv7.apbldg@lidb_link bldg,
-        lni_addr addr
+        lni_addr addr,
+        (
+        SELECT
+            DISTINCT ap.apno apno,
+            MAX(trn.trndttm) apdttm
+        FROM
+            imsv7.ap@lidb_link ap,
+            imsv7.aptrn@lidb_link trn,
+            imsv7.apfee@lidb_link fee
+        WHERE
+            ap.apkey = trn.apkey (+)
+            AND trn.apfeekey = fee.apfeekey (+)
+            AND trn.trnamt > 0
+            AND trn.trntype = 'FCHG'
+            AND fee.feedesc NOT LIKE '%ACCELERATED%'
+            AND fee.feedesc NOT LIKE '%FILING%'
+        GROUP BY
+            ap.apno) paiddate
     WHERE
-        ap.apno = apstat.apno
-        AND defn.apdefnkey = ap.apdefnkey
-        AND bldg.apno = ap.apno
+        ap.apno = apstat.apno (+)
+        AND ap.apdefnkey = defn.apdefnkey
+        AND ap.apno = bldg.apno (+)
         AND ap.addrkey = addr.addrkey
-        AND ap.apkey = trn.apkey
-        AND fee.apfeekey = trn.apfeekey
+        AND ap.apno = paiddate.apno (+)
         AND apstat.apno IS NOT NULL
-        AND trn.trnamt > 0
-        AND trn.trntype = 'FCHG'
-        AND fee.feedesc NOT LIKE '%ACCELERATED%'
-        AND fee.feedesc NOT LIKE '%FILING%'
-    GROUP BY
-        addr.addr_parsed,
-        TRIM(apstat.apno),
-        defn.aptype,
-        apstat.examiner,
-        bldg.nopages
 """
 
 cloud_insert = """
