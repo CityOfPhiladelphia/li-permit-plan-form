@@ -22,11 +22,15 @@ This application serves two purposes:
         - Number of Sheets (from Hansen App tab)
         - Other AP numbers that are associated with this plan
 
-The data repository used for this form is stored in the following tables on GISLICLD: plan_app_plan, plan_app_permit, and plan_app_plan_permit. Data from Hansen is ETL'd into plan_app_permit nightly through the use of a scheduled process that runs etl/main.py
+The data repository used for this form is stored in the following tables on GISLICLD: plan_app_plan, plan_app_permit, and plan_app_plan_permit. Data from Hansen is ETL'd into plan_app_permit nightly through the use of a scheduled process.
 
-## Usage
-pip install -r requirements.txt
+## Installation
+- `pip install -r requirements.txt`
+- Get the config.py file from one of us containing username and passwords and put it in your li-permit-plan-form directory
+- Make sure li_dbs is either in this same directory or in your Python\Lib\site-packages folder.
 
-Get the config.py file from one of us containing username and passwords and put it in your li-permit-plan-form directory. Make sure li_dbs is either in this same directory or in your Python\Lib\site-packages folder.
+### ETL
+`python etl/main.py`
 
-Run app.py
+### Web Server
+`python app.py`
