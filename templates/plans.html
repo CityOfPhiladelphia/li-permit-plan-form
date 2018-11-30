@@ -21,7 +21,7 @@
             {% for plan in plans %}
             <tr>
                 <td>
-                    {{ plan.id }}
+                    {{ loop.index }}
                 </td>
                 <td>
                     {{ plan.package|capitalize }}
