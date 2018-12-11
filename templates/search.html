@@ -42,6 +42,7 @@
                         <th>Location</th>
                         <th>Number of Sheets</th>
                         <th>Comments</th>
+                        <th>Edit</th>
                         <tr>
                             <td>
                                 {{ plan.package|capitalize }}
@@ -54,6 +55,9 @@
                             </td>
                             <td>
                                 {{ plan.comments }}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('edit', plan_id=plan.id) }}">Edit</a>
                             </td>
                         </tr>
                     </table>
