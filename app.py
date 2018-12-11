@@ -3,7 +3,21 @@ from flask_httpauth import HTTPDigestAuth
 from gevent.pywsgi import WSGIServer
 
 from config import SECRET_KEY, users
-from db import *
+from db import (
+    close_db,
+    get_permit,
+    get_plans,
+    get_apnos_associated_with_plan,
+    get_all_apnos_associated_with_plan,
+    get_permit_address,
+    insert_plan,
+    insert_plan_permit,
+    get_all_plans,
+    get_plan_from_id,
+    delete_plan,
+    update_plan,
+    update_plan_permits
+)
 
 app = Flask(__name__)
 # Close the database when the app shuts down
@@ -18,12 +32,10 @@ def get_pw(username):
     return None
 
 @app.route('/')
-@auth.login_required
 def index():
     return render_template('index.html')
 
 @app.route('/search', methods=['GET', 'POST'])
-@auth.login_required
 def search():
     if request.method == 'POST':
         
@@ -82,7 +94,6 @@ def search():
     return render_template('search.html')
 
 @app.route('/form', methods=['GET', 'POST'])
-@auth.login_required
 def form():
     if request.method == 'POST':
 
@@ -120,7 +131,6 @@ def form():
     return render_template('form.html')
 
 @app.route('/confirm', methods=['GET', 'POST'])
-@auth.login_required
 def confirm():
     # Don't let users view or submit this page if they don't have session data
     if session['apnos'] is None:

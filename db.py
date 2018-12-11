@@ -91,30 +91,52 @@ def insert_plan(package, location, comments):
     db = get_db()
 
     # Insert the plan into the plan table
-    plan_insert_sql = f"""INSERT INTO plan_app_plan (package, location, comments, dateadded)
-                          VALUES ('{package}', '{location}', '{comments}', to_date('{datetime.now().date()}', 'yyyy-mm-dd'))"""
+    plan_insert_sql = f"""INSERT INTO plan_app_plan (
+                            package, 
+                            location, 
+                            comments, 
+                            dateadded
+                          )
+                          VALUES (
+                              '{package}', 
+                              '{location}', 
+                              '{comments}', 
+                              to_date('{datetime.now().date()}', 'yyyy-mm-dd')
+                           )"""
     db.engine.execute(text(plan_insert_sql))
 
 def insert_plan_permit(apno):
     db = get_db()
     
     # Get the latest plan_id
-    plan_id_sql = """SELECT id
-                     FROM plan_app_plan
-                     ORDER BY id DESC"""
+    plan_id_sql = """SELECT 
+                        id
+                     FROM 
+                        plan_app_plan
+                     ORDER BY 
+                        id DESC"""
     plan_id = db.engine.execute(text(plan_id_sql)).fetchone()[0]
 
     # Insert the plan_id and apno into the plan_permit table
-    plan_permit_insert_sql = f"""INSERT INTO plan_app_plan_permit (plan_id, apno)
-                                 VALUES ({plan_id}, {apno})"""
+    plan_permit_insert_sql = f"""INSERT INTO plan_app_plan_permit (
+                                    plan_id, 
+                                    apno
+                                 )
+                                 VALUES (
+                                     {plan_id}, 
+                                     {apno}
+                                 )"""
     db.engine.execute(text(plan_permit_insert_sql))
 
 def get_all_plans():
     db = get_db()
 
-    all_plans_sql = """SELECT * 
-                       FROM plan_app_plan
-                       ORDER BY id"""
+    all_plans_sql = """SELECT 
+                           * 
+                       FROM 
+                           plan_app_plan
+                       ORDER BY 
+                           id"""
 
     plans = db.engine.execute(text(all_plans_sql)).fetchall()
     return plans
@@ -122,9 +144,12 @@ def get_all_plans():
 def get_plan_from_id(plan_id):
     db = get_db()
 
-    plan_sql = f"""SELECT *
-                   FROM plan_app_plan
-                   WHERE id = {plan_id}"""
+    plan_sql = f"""SELECT 
+                       *
+                   FROM 
+                       plan_app_plan
+                   WHERE 
+                       id = {plan_id}"""
 
     plan = db.engine.execute(text(plan_sql)).fetchone()
     return plan
