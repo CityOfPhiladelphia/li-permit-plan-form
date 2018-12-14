@@ -112,9 +112,8 @@ def form():
 
             # If a permit with a valid apno exists but no address was found, take the user back to the form and flash a message.
             elif permit_address is None:
-                error = f'{apno} exists in Hansen, but no address was found. Please contact LI GIS Team.'
+                error = f'{apno} exists in Hansen, but no address was found. \n If the address was created today please ignore this error and submit this form. If not, please contact the LI GIS TEAM.'
                 flash(error)
-                return render_template('form.html')
 
             # If it does exist, store the permit address in the dictionary
             apno_dict[apno] = permit_address
