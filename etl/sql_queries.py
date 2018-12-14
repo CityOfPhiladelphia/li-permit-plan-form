@@ -40,6 +40,8 @@ permit_extract = """
         AND ap.addrkey = addr.addrkey
         AND ap.apno = paiddate.apno (+)
         AND apstat.apno IS NOT NULL
+        AND defn.aptype NOT LIKE '%BL_%'
+	    AND defn.aptype NOT LIKE '%TL_%'
 """
 
 cloud_insert = """
