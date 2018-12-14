@@ -46,9 +46,8 @@
 
   <main id="main">
     <div class="flash"> 
-        <strong>Your browser does not have JavaScript enabled. Please enable JavaScript for this site to work properly.</strong>
+      <noscript><strong>Your browser does not have JavaScript enabled. Please enable JavaScript for this site to work properly.</strong></noscript>
     </div>
-    <noscript></noscript>
     {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
     {% endfor %}
