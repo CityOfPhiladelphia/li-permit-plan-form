@@ -45,9 +45,11 @@
   </header>
 
   <main id="main">
-    <div class="flash"> 
-      <noscript><strong>Your browser does not have JavaScript enabled. Please enable JavaScript for this site to work properly.</strong></noscript>
-    </div>
+    <noscript>
+      <div class="flash"> 
+      <strong>Your browser does not have JavaScript enabled. Please enable JavaScript for this site to work properly.</strong>
+      </div>
+    </noscript>
     {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
     {% endfor %}
