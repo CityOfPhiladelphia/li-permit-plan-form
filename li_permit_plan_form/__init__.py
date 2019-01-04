@@ -8,6 +8,7 @@ from li_permit_plan_form.db import close_db
 def create_app():
     app = Flask(__name__)
     app.secret_key = SECRET_KEY
+    app.teardown_appcontext(close_db)
 
     app.register_blueprint(form.bp)
     app.register_blueprint(plans.bp)
@@ -18,6 +19,4 @@ def create_app():
         return render_template('index.html')
 
     return app
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
+    
