@@ -57,7 +57,7 @@
                                 {{ plan.comments }}
                             </td>
                             <td>
-                                <a href="{{ url_for('edit', plan_id=plan.id) }}">Edit</a>
+                                <a href="{{ url_for('plans.edit', plan_id=plan.id) }}">Edit</a>
                             </td>
                         </tr>
                     </table>
@@ -80,7 +80,7 @@
     {% endif %}
     <h1 class="title">Search for Plans</h1>
 
-    <form action="{{ url_for('search') }}" method="post" style="margin-bottom: 50px;">
+    <form action="{{ url_for('search.search') }}" method="post" style="margin-bottom: 50px;">
 
         <div class="form-group" id="search-form">
             <div>

@@ -21,12 +21,12 @@
         {% endfor %}
     </table>
     <div class="pull-right confirm-btn-outer">
-        <form action="{{ url_for('confirm') }}" method="post" class="confirm-btn-inner">
+        <form action="{{ url_for('form.confirm') }}" method="post" class="confirm-btn-inner">
             <button class="btn btn-secondary submit-button">
                 <span>Submit</span>
             </button>
         </form>
-        <a href="{{ url_for('form') }}" class="confirm-btn-inner">
+        <a href="{{ url_for('form.form') }}" class="confirm-btn-inner">
             <button class="btn btn-decline submit-button">
                 <span>Abort</span>
             </button>

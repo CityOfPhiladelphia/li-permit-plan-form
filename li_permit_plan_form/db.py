@@ -1,6 +1,6 @@
-import cx_Oracle
-
 from datetime import datetime
+
+import cx_Oracle
 from flask import g
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
