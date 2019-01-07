@@ -2,8 +2,8 @@ from flask import (
     Blueprint, render_template, flash, redirect, url_for, request
 )
 
-from .auth import auth
-from .db import (
+from li_permit_plan_form.auth import auth
+from li_permit_plan_form.db import (
     get_all_plans, delete_plan, get_permit_address, get_plan_from_id, 
     get_all_apnos_associated_with_plan, update_plan, update_plan_permits
 )

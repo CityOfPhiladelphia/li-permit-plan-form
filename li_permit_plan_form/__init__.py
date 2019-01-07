@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 
 from config import SECRET_KEY
-from li_permit_plan_form import form, plans, search
+from li_permit_plan_form.views import form, plans, search
 from li_permit_plan_form.db import close_db
 
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, flash
 
-from .db import get_permit, get_plans, get_apnos_associated_with_plan
+from li_permit_plan_form.db import get_permit, get_plans, get_apnos_associated_with_plan
 
 
 bp = Blueprint('search', __name__)

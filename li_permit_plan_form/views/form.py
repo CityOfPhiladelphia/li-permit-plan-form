@@ -2,7 +2,7 @@ from flask import (
     Blueprint, request, session, render_template, flash, redirect, url_for
 )
 
-from .db import get_permit_address, insert_plan, insert_plan_permit
+from li_permit_plan_form.db import get_permit_address, insert_plan, insert_plan_permit
 
 
 bp = Blueprint('form', __name__)
