@@ -45,5 +45,7 @@ $ flask run
 
 ### Production Web Server
 ```bash
-$ python wsgi.py
+$ export FLASK_APP=wsgi
+$ export FLASK_ENV=development
+$ flask run
 ```
