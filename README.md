@@ -1,4 +1,6 @@
 # Permit Plan Form
+http://192.168.103.131:8200
+Username and Password are in the config file located on 192.168.103.131 VM
 
 ## Project Outline
 
