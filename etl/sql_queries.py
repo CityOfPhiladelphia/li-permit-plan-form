@@ -3,45 +3,15 @@ truncate_query = """
 """
 
 permit_extract = """
-    SELECT
-        DISTINCT addr.addr_parsed address,
-        TRIM(apstat.apno) apno,
-        defn.aptype,
-        apstat.examiner,
-        bldg.nopages,
-        paiddate.apdttm
-    FROM
-        imsv7.imsv7li_permitappstatus@lidb_link apstat,
-        imsv7.apdefn@lidb_link defn,
-        imsv7.ap@lidb_link ap,
-        imsv7.apbldg@lidb_link bldg,
-        lni_addr addr,
-        (
-        SELECT
-            DISTINCT ap.apno apno,
-            MAX(trn.trndttm) apdttm
-        FROM
-            imsv7.ap@lidb_link ap,
-            imsv7.aptrn@lidb_link trn,
-            imsv7.apfee@lidb_link fee
-        WHERE
-            ap.apkey = trn.apkey (+)
-            AND trn.apfeekey = fee.apfeekey (+)
-            AND trn.trnamt > 0
-            AND trn.trntype = 'FCHG'
-            AND fee.feedesc NOT LIKE '%ACCELERATED%'
-            AND fee.feedesc NOT LIKE '%FILING%'
-        GROUP BY
-            ap.apno) paiddate
-    WHERE
-        ap.apno = apstat.apno (+)
-        AND ap.apdefnkey = defn.apdefnkey
-        AND ap.apno = bldg.apno (+)
-        AND ap.addrkey = addr.addrkey
-        AND ap.apno = paiddate.apno (+)
-        AND apstat.apno IS NOT NULL
-        AND defn.aptype NOT LIKE '%BL_%'
-	    AND defn.aptype NOT LIKE '%TL_%'
+    SELECT addr.addr_parsed address,
+	  APNO,
+	  APTYPE,
+	  EXAMINER,
+	  NOPAGES,
+	  APDTTM
+	FROM PLAN_APP_PERMIT_NO_LNIADDR_MVW p,
+	  lni_addr addr
+	WHERE p.addrkey = addr.addrkey
 """
 
 cloud_insert = """

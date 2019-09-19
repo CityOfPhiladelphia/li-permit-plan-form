@@ -7,7 +7,8 @@ def send_email():
 
     recipientslist = ['dani.interrante@phila.gov', 
                       'philip.ribbens@phila.gov',
-                      'shannon.holm@phila.gov']
+                      'shannon.holm@phila.gov',
+					  'jessica.bradley@phila.gov']
     sender = 'ligisteam@phila.gov'
     commaspace = ', '
     email = 'PERMIT in GISLNICLD failed to update properly and may be missing rows or empty. This table supports the permit-plan-form application. Please stand by for updates.'
