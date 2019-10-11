@@ -11,7 +11,7 @@ def send_email():
 					  'jessica.bradley@phila.gov']
     sender = 'ligisteam@phila.gov'
     commaspace = ', '
-    email = 'PERMIT in GISLNICLD failed to update properly and may be missing rows or empty. This table supports the permit-plan-form application. Please stand by for updates.'
+    email = 'PLAN_APP_PERMIT in GISLICLD failed to update properly and may be missing rows or empty. This table supports the permit-plan-form application. Please stand by for updates.'
     text = f'AUTOMATIC EMAIL: \n {email}'
     msg = MIMEText(text)
     msg['To'] = commaspace.join(recipientslist)
