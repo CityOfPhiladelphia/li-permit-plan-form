@@ -12,7 +12,7 @@ permit_extract = """
 	FROM PLAN_APP_PERMIT_NO_LNIADDR_MVW p,
 	  lni_addr addr
 	WHERE p.addrkey = addr.addrkey
-	AND APDTTM > '01-OCT-2019' and apdttm < '18-OCT-2019'
+	AND APDTTM > '01-JUL-2019' and apdttm < '18-OCT-2019'
 """
 
 cloud_insert = """
