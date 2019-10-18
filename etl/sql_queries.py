@@ -1,5 +1,5 @@
 truncate_query = """
-    TRUNCATE TABLE plan_app_permit
+    TRUNCATE TABLE plan_app_permit_test
 """
 
 permit_extract = """
@@ -12,10 +12,11 @@ permit_extract = """
 	FROM PLAN_APP_PERMIT_NO_LNIADDR_MVW p,
 	  lni_addr addr
 	WHERE p.addrkey = addr.addrkey
+	AND APDTTM > '01-OCT-2019' and apdttm < '18-OCT-2019'
 """
 
 cloud_insert = """
-    INSERT INTO plan_app_permit (
+    INSERT INTO plan_app_permit_test (
     address,
     apno,
     aptype,
