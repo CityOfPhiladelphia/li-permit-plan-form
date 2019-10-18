@@ -41,11 +41,10 @@ def send_email(failed):
     from email.mime.text import MIMEText
     from phila_mail import server
 
-    #recipientslist = ['dani.interrante@phila.gov',
-    #                  'philip.ribbens@phila.gov',
-    #                  'shannon.holm@phila.gov',
-	#				  'jessica.bradley@phila.gov']
-    recipientslist = ['philip.ribbens@phila.gov']
+    recipientslist = ['dani.interrante@phila.gov',
+                      'philip.ribbens@phila.gov',
+                      'shannon.holm@phila.gov',
+					  'jessica.bradley@phila.gov']
     sender = 'ligisteam@phila.gov'
     commaspace = ', '
     text = f'AUTOMATIC EMAIL \n' + '\nThe following tables on GISLICLD failed to update:\n\n' + ', \n'.join(failed) + '\n\nThis table supports the permit-plan-form application.'
