@@ -7,7 +7,7 @@ def main():
         c = conn.cursor()
 
         # Create plans table
-        c.execute('''CREATE TABLE plan_app_plan_test (
+        c.execute('''CREATE TABLE plan_app_plan (
                         id NUMBER(20) PRIMARY KEY,
                         package VARCHAR2(254 BYTE), 
                         location VARCHAR2(254 BYTE),
@@ -17,7 +17,7 @@ def main():
                      )''')
 
         # Create permits table
-        c.execute('''CREATE TABLE plan_app_permit_test (
+        c.execute('''CREATE TABLE plan_app_permit (
                         id NUMBER(20) PRIMARY KEY,
                         address VARCHAR2(254 BYTE), 
                         apno VARCHAR2(20 BYTE), 
@@ -30,7 +30,7 @@ def main():
                      )''')
 
         # Create plan_permit table to allow for many-to-many relationship
-        c.execute('''CREATE TABLE plan_app_plan_permit_test (
+        c.execute('''CREATE TABLE plan_app_plan_permit (
                         id NUMBER(20) PRIMARY KEY,
                         plan_id NUMBER(20),
                         apno NUMBER(20)
