@@ -1,4 +1,4 @@
-from li_dbs import GISLNI, GISLICLD
+from li_dbs import GISLNI, GISLICLD, GISLNIDB
 from sql_queries import queries
 import petl as etl
 
@@ -47,7 +47,7 @@ def send_email(failed):
 					  'jessica.bradley@phila.gov']
     sender = 'ligisteam@phila.gov'
     commaspace = ', '
-    text = f'AUTOMATIC EMAIL \n' + '\nThe following tables on GISLICLD failed to update:\n\n' + ', \n'.join(failed) + '\n\nThis table supports the permit-plan-form application.'
+    text = f'AUTOMATIC EMAIL \n' + '\nThe following tables on GISLNIDB failed to update:\n\n' + ', \n'.join(failed) + '\n\nThis table supports the permit-plan-form application.'
     msg = MIMEText(text)
     msg['To'] = commaspace.join(recipientslist)
     msg['From'] = sender
@@ -62,7 +62,8 @@ def get_source_db(query):
         return GISLNI.GISLNI
     elif query.source_db == 'GISLICLD':
         return GISLICLD.GISLICLD
-
+    elif query.source_db == 'GISLNIDB':
+        return GISLNIDB.GISLNIDB
 
 def get_extract_query(query):
     with open(query.extract_query_file) as sql:
@@ -78,7 +79,7 @@ def etl_(query, logger):
         etl.fromdb(source, extract_query).topickle(f'temp/{query.target_table}.p')
 
     logger.info(f'{query.target_table} - loading data from pickle file...')
-    with GISLICLD.GISLICLD() as target:
+    with GISLNIDB.GISLNIDB() as target:
         etl.frompickle(f'temp/{query.target_table}.p').todb(get_cursor(target), query.target_table.upper())
 
 

@@ -1,8 +1,8 @@
-from li_dbs import GISLICLD
+from li_dbs import GISLNIDB
 
 
 def main():
-    with GISLICLD.GISLICLD() as conn:
+    with GISLNIDB.GISLNIDB() as conn:
 
         c = conn.cursor()
 
