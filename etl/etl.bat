@@ -1,1 +1,1 @@
-start C:\Users\peter.dannemann\AppData\Local\Programs\Python\Python36\python.exe C:\Projects\li-permit-plan-form\etl\main.py
+start C:\Users\peter.dannemann\AppData\Local\Programs\Python\Python36\python.exe D:\li-permit-plan-form\etl\main.py
