@@ -17,16 +17,14 @@ def main():
                      )''')
 
         # Create permits table
-        c.execute('''CREATE TABLE plan_app_permit (
+        c.execute('''CREATE TABLE plan_app_permit(
                         id NUMBER(20) PRIMARY KEY,
                         address VARCHAR2(254 BYTE), 
                         apno VARCHAR2(20 BYTE), 
                         aptype VARCHAR2(254 BYTE), 
                         examiner VARCHAR2(254 BYTE),
                         nopages NUMBER(10), 
-                        apdttm DATE,
-                     
-                     CONSTRAINT unique_permit UNIQUE (apno)
+                        apdttm DATE
                      )''')
 
         # Create plan_permit table to allow for many-to-many relationship

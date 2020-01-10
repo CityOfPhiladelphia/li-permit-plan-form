@@ -1,4 +1,4 @@
-from li_dbs import GISLNI, GISLICLD, GISLNIDB
+from li_dbs import GISLNI, GISLICLD, GISLNIDB, GISLNIX
 from sql_queries import queries
 import petl as etl
 
@@ -64,7 +64,9 @@ def get_source_db(query):
         return GISLICLD.GISLICLD
     elif query.source_db == 'GISLNIDB':
         return GISLNIDB.GISLNIDB
-
+    elif query.source_db == 'GISLNIX':
+        return GISLNIX.GISLNIX
+		
 def get_extract_query(query):
     with open(query.extract_query_file) as sql:
         return sql.read()
@@ -96,7 +98,7 @@ def etl_process(queries):
             etl_(query, logger)
             logger.info(f'{query.target_table} - successfully updated.')
         except:
-            logger.error(f'ETL Process into GISLICLD.{query.target_table} failed.', exc_info = True)
+            logger.error(f'ETL Process into GISLNIDB.{query.target_table} failed.', exc_info = True)
             failed.append(query.target_table)
 
     logger.info('ETL process ended')

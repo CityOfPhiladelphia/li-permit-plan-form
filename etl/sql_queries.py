@@ -11,5 +11,4 @@ PlanAppPermit = SqlQuery(
     target_table='plan_app_permit'
 )
 
-
 queries = [PlanAppPermit]
