@@ -1,8 +1,8 @@
-from li_dbs import GISLNIDB
+from li_dbs import PERMITP
 
 
 def main():
-    with GISLNIDB.GISLNIDB() as conn:
+    with PERMITP.PERMITP() as conn:
 
         c = conn.cursor()
 

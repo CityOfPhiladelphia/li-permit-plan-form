@@ -1,4 +1,4 @@
-from li_dbs import GISLNI, GISLICLD, GISLNIDB, GISLNIX
+from li_dbs import GISLNI, PERMITP
 from sql_queries import queries
 import petl as etl
 
@@ -60,12 +60,9 @@ def send_email(failed):
 def get_source_db(query):
     if query.source_db == 'GISLNI':
         return GISLNI.GISLNI
-    elif query.source_db == 'GISLICLD':
-        return GISLICLD.GISLICLD
-    elif query.source_db == 'GISLNIDB':
-        return GISLNIDB.GISLNIDB
-    elif query.source_db == 'GISLNIX':
-        return GISLNIX.GISLNIX
+    elif query.source_db == 'PERMITP':
+        return PERMITP.PERMITP
+
 		
 def get_extract_query(query):
     with open(query.extract_query_file) as sql:
@@ -81,7 +78,7 @@ def etl_(query, logger):
         etl.fromdb(source, extract_query).topickle(f'temp/{query.target_table}.p')
 
     logger.info(f'{query.target_table} - loading data from pickle file...')
-    with GISLNIDB.GISLNIDB() as target:
+    with PERMITP.PERMITP() as target:
         etl.frompickle(f'temp/{query.target_table}.p').todb(get_cursor(target), query.target_table.upper())
 
 
