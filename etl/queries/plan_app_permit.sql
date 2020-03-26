@@ -15,7 +15,7 @@ FROM (SELECT sub.*,
                    p.permitdescription aptype,
                    p.examinerapproved AS examiner,
                    NULL nopages,
-                   p.applicationdate apdttm,
+                   p.dateadvanced apdttm,
                    'ECLIPSE' systemofrecord
             FROM mvw_plan_app_permit_no_lniaddr p,
                  eclipse_lni_addr addr

@@ -12,7 +12,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta charset="UTF-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Permit Plan Form | City of Philadelphia</title>
+  <title>TEST Permit Plan Form | City of Philadelphia</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/phila-standards@0.11.2/dist/css/phila-app.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}">
@@ -40,8 +40,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="app-divide"></div>
         <div class="page-title-container">
           <a href="{{ url_for('index') }}">
-            <h1 class="page-title">Permit Plan Form</h1>
-            <h2 class="page-subtitle">For Internal Use Only</h2>
+            <h1 class="page-title">TEST Permit Plan Form</h1>
+            <h2 class="page-subtitle">For Internal TESTING Use Only</h2>
           </a>
         </div>
         <div class="app-buttons">
@@ -61,6 +61,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="flash">{{ message }}</div>
     {% endfor %}
     <div class="container">
+	  <h2 style="color:red">This is the TEST version of the app. If you add or edit any plans data don't expect it to stick around.</h2>
       {% block content %}
       {% endblock %}
     </div>

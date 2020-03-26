@@ -8,7 +8,7 @@ class SqlQuery():
 PlanAppPermit = SqlQuery(
     extract_query_file='plan_app_permit.sql',
     source_db='GISLNI',
-    target_table='plan_app_permit'
+    target_table='plan_app_permit_test'
 )
 
 queries = [PlanAppPermit]

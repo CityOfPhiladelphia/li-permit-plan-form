@@ -15,19 +15,19 @@ def search():
         try:
             permit = get_permit(apno)
         except:
-            error = 'An error has occurred. Please try again later or contact LI GIS Team if the error persists.'
+            error = 'An error has occurred while searching for permit. Please try again later or contact LI GIS Team if the error persists.'
             flash(error)
             return render_template('search.html')
 
         # Flash a message when an invalid AP Number is entered
         if permit is None:
-            error = 'Please enter a valid AP Number.'
+            error = 'Please enter a valid AP or Permit Number.'
             flash(error)
             return render_template('search.html')
 
         # Flash a message when no results are found for that AP Number
         elif len(permit) == 0:
-            error = 'No permit was found for that AP Number.'
+            error = 'No permit was found for that AP/Permit Number.'
             flash(error)
             return render_template('search.html')
 
@@ -35,13 +35,13 @@ def search():
         try:
             plans = get_plans(apno)
         except:
-            error = 'An error has occurred. Please try again later or contact LI GIS Team if the error persists.'
+            error = 'An error has occurred while fetching plans. Please try again later or contact LI GIS Team if the error persists.'
             flash(error)
             return render_template('search.html', permit=permit)
 
         # Flash a message when no plans are found for that AP Number
         if len(plans) == 0:
-            error = 'No plans were found for that AP Number.'
+            error = 'No plans were found for that AP/Permit Number.'
             flash(error)
             return render_template('search.html', permit=permit)
 

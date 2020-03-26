@@ -38,7 +38,7 @@ def close_db(e=None):
 def get_permit(apno):
     db = get_db()
     named_params = {'apno': apno}
-    sql = f"""SELECT * FROM plan_app_permit
+    sql = f"""SELECT * FROM plan_app_permit_test
               WHERE apno LIKE :apno"""
     permit = db.engine.execute(text(sql), named_params).fetchone()
     return permit
@@ -46,10 +46,10 @@ def get_permit(apno):
 def get_plans(apno):
     db = get_db()
     named_params = {'apno': apno}
-    sql = f"""SELECT * FROM plan_app_plan
-              INNER JOIN plan_app_plan_permit ON plan_app_plan.id = plan_app_plan_permit.plan_id
-              INNER JOIN plan_app_permit ON plan_app_permit.apno = plan_app_plan_permit.apno
-              WHERE plan_app_permit.apno LIKE :apno"""
+    sql = f"""SELECT * FROM plan_app_plan_test
+              INNER JOIN plan_app_plan_permit_test ON plan_app_plan_test.id = plan_app_plan_permit_test.plan_id
+              INNER JOIN plan_app_permit_test ON plan_app_permit_test.apno = TO_CHAR(plan_app_plan_permit_test.apno)
+              WHERE plan_app_permit_test.apno LIKE :apno"""
     plans = db.engine.execute(text(sql), named_params).fetchall()
     return plans
 
@@ -57,14 +57,14 @@ def get_apnos_associated_with_plan(plan_id, apno):
     db = get_db()
     named_params = {'apno': apno, 'plan_id': plan_id}
     sql = f"""SELECT apno
-              FROM plan_app_permit
+              FROM plan_app_permit_test
               WHERE id IN 
               (
                   SELECT apno
-                  FROM plan_app_plan_permit
+                  FROM plan_app_plan_permit_test
                   WHERE plan_id = :plan_id
               )
-              AND plan_app_permit.apno NOT LIKE :apno"""
+              AND plan_app_permit_test.apno NOT LIKE :apno"""
     apnos = db.engine.execute(text(sql), named_params).fetchall()
     return apnos
 
@@ -72,7 +72,7 @@ def get_all_apnos_associated_with_plan(plan_id):
     db = get_db()
     named_params = {'plan_id': plan_id}
     sql = f"""SELECT apno
-              FROM plan_app_plan_permit
+              FROM plan_app_plan_permit_test
               WHERE plan_id = :plan_id"""
     apnos = db.engine.execute(text(sql), named_params).fetchall()
     return apnos
@@ -85,7 +85,7 @@ def get_permit_address(apno):
         return False
     db = get_db()
     named_params = {'apno': apno}
-    sql = f"""SELECT address FROM plan_app_permit
+    sql = f"""SELECT address FROM plan_app_permit_test
               WHERE apno LIKE :apno"""
     permit_address = db.engine.execute(text(sql), named_params).fetchone()
     if permit_address is not None:
@@ -97,7 +97,7 @@ def insert_plan(package, location, comments):
     named_params = {'package': package, 'location': location, 'comments': comments}
 
     # Insert the plan into the plan table
-    plan_insert_sql = f"""INSERT INTO plan_app_plan (
+    plan_insert_sql = f"""INSERT INTO plan_app_plan_test (
                             package, 
                             location, 
                             comments, 
@@ -118,7 +118,7 @@ def insert_plan_permit(apno):
     plan_id_sql = """SELECT 
                         id
                      FROM 
-                        plan_app_plan
+                        plan_app_plan_test
                      ORDER BY 
                         id DESC"""
     plan_id = db.engine.execute(text(plan_id_sql)).fetchone()[0]
@@ -126,7 +126,7 @@ def insert_plan_permit(apno):
     named_params = {'plan_id': plan_id, 'apno': apno}
 
     # Insert the plan_id and apno into the plan_permit table
-    plan_permit_insert_sql = f"""INSERT INTO plan_app_plan_permit (
+    plan_permit_insert_sql = f"""INSERT INTO plan_app_plan_permit_test (
                                     plan_id, 
                                     apno
                                  )
@@ -142,7 +142,7 @@ def get_all_plans():
     all_plans_sql = """SELECT 
                            * 
                        FROM 
-                           plan_app_plan
+                           plan_app_plan_test
                        ORDER BY 
                            id"""
 
@@ -156,7 +156,7 @@ def get_plan_from_id(plan_id):
     plan_sql = f"""SELECT 
                        *
                    FROM 
-                       plan_app_plan
+                       plan_app_plan_test
                    WHERE 
                        id = :plan_id"""
 
@@ -168,12 +168,12 @@ def delete_plan(plan_id):
     named_params = {'plan_id': plan_id}
 
     # Delete the plan from the plan table
-    delete_plan_sql = f"""DELETE FROM plan_app_plan
+    delete_plan_sql = f"""DELETE FROM plan_app_plan_test
                           WHERE id = :plan_id"""
     db.engine.execute(text(delete_plan_sql), named_params)
 
     # Delete the plan_permit entries for this plan
-    delete_plan_permit_sql = f"""DELETE FROM plan_app_plan_permit
+    delete_plan_permit_sql = f"""DELETE FROM plan_app_plan_permit_test
                                  WHERE plan_id = :plan_id"""
     db.engine.execute(text(delete_plan_permit_sql), named_params)
 
@@ -182,7 +182,7 @@ def update_plan(plan_id, package, location, comments):
     named_params = {'package': package, 'location': location, 'comments': comments, 'plan_id': plan_id}
 
     # Insert the plan into the plan table
-    plan_insert_sql = f"""UPDATE plan_app_plan
+    plan_insert_sql = f"""UPDATE plan_app_plan_test
                             SET package=:package,
                                 location=:location,
                                 comments=:comments,
@@ -195,7 +195,7 @@ def update_plan_permits(plan_id, apnos):
     named_params = {'plan_id': plan_id}
 
     # Delete the old plan_permits
-    plan_permit_delete_sql = f"""DELETE FROM plan_app_plan_permit
+    plan_permit_delete_sql = f"""DELETE FROM plan_app_plan_permit_test
                                    WHERE plan_id=:plan_id"""
 
     db.engine.execute(text(plan_permit_delete_sql), named_params)
@@ -204,7 +204,7 @@ def update_plan_permits(plan_id, apnos):
     for apno in apnos:
         named_params = {'plan_id': plan_id, 'apno': apno}
 
-        plan_permit_insert_sql = f"""INSERT INTO plan_app_plan_permit (plan_id, apno)
+        plan_permit_insert_sql = f"""INSERT INTO plan_app_plan_permit_test (plan_id, apno)
                                     VALUES (:plan_id, :apno)"""
 
         # Add the new plan_permits

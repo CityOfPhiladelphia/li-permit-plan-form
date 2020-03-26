@@ -47,7 +47,7 @@ def edit(plan_id):
             # If a permit with a valid apno doesn't exist, take the user back to the form and flash a message.
             permit_address = get_permit_address(apno)
             if permit_address is False:
-                error = f'{apno} is not a valid AP Number.'
+                error = f'{apno} is not a valid AP or Permit Number.'
                 flash(error)
                 plan = get_plan_from_id(plan_id)
                 apnos = get_all_apnos_associated_with_plan(plan_id)
@@ -55,7 +55,7 @@ def edit(plan_id):
 
             # If a permit with a valid apno exists but no address was found, take the user back to the form and flash a message.
             elif permit_address is None:
-                error = f'{apno} exists in Hansen, but no address was found. Please contact LI GIS Team.'
+                error = f'{apno} exists in Hansen or eCLIPSE, but no address was found. Please contact LI GIS Team.'
                 flash(error)
                 plan = get_plan_from_id(plan_id)
                 apnos = get_all_apnos_associated_with_plan(plan_id)
