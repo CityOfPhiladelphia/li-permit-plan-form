@@ -48,7 +48,7 @@ def get_plans(apno):
     named_params = {'apno': apno}
     sql = f"""SELECT * FROM plan_app_plan_test
               INNER JOIN plan_app_plan_permit_test ON plan_app_plan_test.id = plan_app_plan_permit_test.plan_id
-              INNER JOIN plan_app_permit_test ON plan_app_permit_test.apno = TO_CHAR(plan_app_plan_permit_test.apno)
+              INNER JOIN plan_app_permit_test ON plan_app_permit_test.apno = plan_app_plan_permit_test.apno
               WHERE plan_app_permit_test.apno LIKE :apno"""
     plans = db.engine.execute(text(sql), named_params).fetchall()
     return plans
@@ -58,7 +58,7 @@ def get_apnos_associated_with_plan(plan_id, apno):
     named_params = {'apno': apno, 'plan_id': plan_id}
     sql = f"""SELECT apno
               FROM plan_app_permit_test
-              WHERE id IN 
+              WHERE apno IN 
               (
                   SELECT apno
                   FROM plan_app_plan_permit_test
@@ -78,9 +78,9 @@ def get_all_apnos_associated_with_plan(plan_id):
     return apnos
 
 def get_permit_address(apno):
-    # Ensure apno is an integer
+    # Ensure apno is a string
     try:
-        int(apno)
+        str(apno)
     except ValueError:
         return False
     db = get_db()

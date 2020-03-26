@@ -11,4 +11,11 @@ PlanAppPermit = SqlQuery(
     target_table='plan_app_permit_test'
 )
 
+
+PlanAppPlanPermitApnoToChar = SqlQuery(
+    extract_query_file='plan_app_plan_permit_apno_tochar.sql',
+    source_db='GISLNIDBX',
+    target_table='plan_app_plan_permit_test'
+)
+
 queries = [PlanAppPermit]

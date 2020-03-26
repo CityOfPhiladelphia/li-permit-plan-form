@@ -9,7 +9,7 @@ bp = Blueprint('search', __name__)
 def search():
     if request.method == 'POST':
         
-        apno = request.form.get('apno-form')
+        apno = str(request.form.get('apno-form'))
 
         # Flash a message when something unexpected occurs
         try:
