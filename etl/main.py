@@ -45,9 +45,10 @@ def send_email(failed):
                       'philip.ribbens@phila.gov',
                       'shannon.holm@phila.gov',
 					  'jessica.bradley@phila.gov']
+    recipientslist = ['philip.ribbens@phila.gov']
     sender = 'ligisteam@phila.gov'
     commaspace = ', '
-    text = f'AUTOMATIC EMAIL \n' + '\nThe following tables on GISLNIDB failed to update:\n\n' + ', \n'.join(failed) + '\n\nThis table supports the permit-plan-form application.'
+    text = f'AUTOMATIC EMAIL \n' + '\nThe following tables on PERMITP failed to update:\n\n' + ', \n'.join(failed) + '\n\nThis table supports the permit-plan-form application.'
     msg = MIMEText(text)
     msg['To'] = commaspace.join(recipientslist)
     msg['From'] = sender
@@ -95,7 +96,7 @@ def etl_process(queries):
             etl_(query, logger)
             logger.info(f'{query.target_table} - successfully updated.')
         except:
-            logger.error(f'ETL Process into GISLNIDB.{query.target_table} failed.', exc_info = True)
+            logger.error(f'ETL Process into PERMITP.{query.target_table} failed.', exc_info = True)
             failed.append(query.target_table)
 
     logger.info('ETL process ended')

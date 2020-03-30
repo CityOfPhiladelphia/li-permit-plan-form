@@ -8,9 +8,9 @@
         <h1 class="title">Search Results</h1>
         <h2 class="title">Permit Information</h2>
         <table class="table" id="permit-table">
-            <th>AP Number</th>
+            <th>AP/Permit Number</th>
             <th>Address</th>
-            <th>AP Type</th>
+            <th>AP Type/Permit Description</th>
             <th>Examiner Who Approved Application</th>
             <th>Date Advanced to Plans Reviewed Stage</th>
             <tr>
@@ -63,9 +63,9 @@
                     </table>
 
                     {% if plan.apnos %}
-                        <h4 class="title">Other AP Numbers Associated With This Plan</h3>
+                        <h4 class="title">Other AP/Permit Numbers Associated With This Plan</h3>
                         <table class="table" id="apno-table">
-                            <th>AP Numbers</th>
+                            <th>AP/Permit Numbers</th>
                             {% for apno in plan.apnos %}
                                 <tr>
                                     <td>
@@ -84,7 +84,7 @@
 
         <div class="form-group" id="search-form">
             <div>
-                <label for="ap-number-input" class="search-label">AP Number</label>
+                <label for="ap-number-input" class="search-label">AP/Permit Number</label>
                 <span class="required-label search-label">(required)</span>
             </div>
             <div id="ap-number-input">
