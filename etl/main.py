@@ -1,4 +1,4 @@
-from li_dbs import GISLNI, GISLNIDBX
+from li_dbs import GISLNI, PERMITP
 from sql_queries import queries
 import petl as etl
 
@@ -48,7 +48,7 @@ def send_email(failed):
     recipientslist = ['philip.ribbens@phila.gov']
     sender = 'ligisteam@phila.gov'
     commaspace = ', '
-    text = f'AUTOMATIC EMAIL \n' + '\nThe following tables on GISLNIDBX failed to update:\n\n' + ', \n'.join(failed) + '\n\nThis table supports the permit-plan-form application.'
+    text = f'AUTOMATIC EMAIL \n' + '\nThe following tables on PERMITP failed to update:\n\n' + ', \n'.join(failed) + '\n\nThis table supports the permit-plan-form application.'
     msg = MIMEText(text)
     msg['To'] = commaspace.join(recipientslist)
     msg['From'] = sender
@@ -61,8 +61,8 @@ def send_email(failed):
 def get_source_db(query):
     if query.source_db == 'GISLNI':
         return GISLNI.GISLNI
-    elif query.source_db == 'GISLNIDBX':
-        return GISLNIDBX.GISLNIDBX
+    elif query.source_db == 'PERMITP':
+        return PERMITP.PERMITP
 
 		
 def get_extract_query(query):
@@ -79,7 +79,7 @@ def etl_(query, logger):
         etl.fromdb(source, extract_query).topickle(f'temp/{query.target_table}.p')
 
     logger.info(f'{query.target_table} - loading data from pickle file...')
-    with GISLNIDBX.GISLNIDBX() as target:
+    with PERMITP.PERMITP() as target:
         etl.frompickle(f'temp/{query.target_table}.p').todb(get_cursor(target), query.target_table.upper())
 
 
@@ -96,7 +96,7 @@ def etl_process(queries):
             etl_(query, logger)
             logger.info(f'{query.target_table} - successfully updated.')
         except:
-            logger.error(f'ETL Process into GISLNIDBX.{query.target_table} failed.', exc_info = True)
+            logger.error(f'ETL Process into PERMITP.{query.target_table} failed.', exc_info = True)
             failed.append(query.target_table)
 
     logger.info('ETL process ended')

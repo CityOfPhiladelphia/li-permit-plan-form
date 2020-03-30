@@ -8,14 +8,14 @@ class SqlQuery():
 PlanAppPermit = SqlQuery(
     extract_query_file='plan_app_permit.sql',
     source_db='GISLNI',
-    target_table='plan_app_permit_test'
+    target_table='eclipse_plan_app_permit'
 )
 
 
 PlanAppPlanPermitApnoToChar = SqlQuery(
     extract_query_file='plan_app_plan_permit_apno_tochar.sql',
-    source_db='GISLNIDBX',
-    target_table='plan_app_plan_permit_test'
+    source_db='PERMITP',
+    target_table='eclipse_plan_app_plan_permit'
 )
 
 queries = [PlanAppPermit]
