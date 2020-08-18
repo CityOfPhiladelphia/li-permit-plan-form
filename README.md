@@ -14,17 +14,20 @@ This application serves two purposes:
 
 2.	A search form that enables the service rep to search a database by AP number and retrieve necessary data:
     - Permit Information:
-        - Address (from Hansen)
-        - AP Type (from Hansen)
-        - Examiner (from Hansen Review Tab)
-        - Date Advanced to Plans Reviewed Stage (from Hansen Back-End)
+        - Address
+        - AP Type/Permit Description
+        - Examiner who approved the application
+        - Date Advanced to Plans Reviewed Stage
     - Plan Information:
         - Package (from App)
         - Location (from App)
         - Number of Sheets (from Hansen App tab)
-        - Other AP numbers that are associated with this plan
+        - Comments
 
-The data repository used for this form is stored in the following tables on PERMITP: plan_app_plan, plan_app_permit, and plan_app_plan_permit. Data from Hansen is ETL'd into plan_app_permit nightly through the use of a scheduled process. As of 9/19/2019 becuause of issues running the query this ETL process was split into two parts -- first the data from Hansen is loaded into an MVW on GISLNI via our standard MVW refresh process; and then second the etl script in this repo updates plan_app_permit by joining the data from that MVW to lni_addr. On 1/14/20 we started using a separate database just for this app -- PERMITP.
+The data repository used for this form is stored in the following tables on PERMITP: eclipse_plan_app_plan, eclipse_plan_app_permit, and eclipse_plan_app_plan_permit. Combined data from Eclipse and Hansen is ETL'd into eclipse_plan_app_permit nightly through the use of a scheduled process (see the etl folder).
+
+Some historical notes:
+As of 9/19/2019 becuause of issues running the query this ETL process was split into two parts -- first the data from Hansen is loaded into an MVW on GISLNI via our standard MVW refresh process; and then second the etl script in this repo updates plan_app_permit by joining the data from that MVW to lni_addr. On 1/14/20 we started using a separate database just for this app -- PERMITP.
 
 ## Installation
 ```bash
